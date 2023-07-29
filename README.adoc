@@ -1,0 +1,53 @@
+= Vectory
+
+image:https://img.shields.io/gem/v/vectory.svg["Gem Version", link="https://rubygems.org/gems/vectory"]
+image:https://github.com/metanorma/vectory/actions/workflows/rake.yml/badge.svg["rake", link="https://github.com/metanorma/vectory/actions/workflows/rake.yml"]
+image:https://codeclimate.com/github/metanorma/vectory/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/vectory"]
+image:https://img.shields.io/github/issues-pr-raw/metanorma/vectory.svg["Pull Requests", link="https://github.com/metanorma/vectory/pulls"]
+image:https://img.shields.io/github/commits-since/metanorma/vectory/latest.svg["Commits since latest",link="https://github.com/metanorma/vectory/releases"]
+
+== Purpose
+
+Vectory is a Ruby gem that performs pairwise vector image conversions for common
+vector image formats (EPS, PS, EMF, SVG).
+
+
+== Installation
+
+=== Prerequisites
+
+Vectory relies on the following software to be installed:
+
+* https://github.com/metanorma/emf2svg-ruby[emf2svg-ruby]
+* https://inkscape.org[Inkscape]
+
+
+=== Gem install
+
+[source,ruby]
+----
+gem install vectory
+----
+
+Or include it in your gemspec.
+
+
+== Usage
+
+[source,sh]
+----
+$ vectory [-o {output-file-name}] -f {format} {input-file-name}
+----
+
+Where,
+
+`format`:: the desired output format (one of: `svg`, `eps`, `ps`, `emf`)
+`input-file-name`:: file path to the input file
+`output-file-name`:: file path to the desired output file (with the file extension)
+
+
+== Contributing
+
+Bug reports and pull requests are welcome on GitHub at:
+
+* https://github.com/metanorma/vectory

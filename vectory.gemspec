@@ -3,36 +3,28 @@
 require_relative "lib/vectory/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "vectory"
-  spec.version = Vectory::VERSION
-  spec.authors = ["Alexande B."]
-  spec.email = ["abobrikovich@gmail.com"]
+  spec.name          = "vectory"
+  spec.version       = Vectory::VERSION
+  spec.authors       = ["Ribose Inc."]
+  spec.email         = ["open.source@ribose.com"]
 
-  spec.summary = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description = "TODO: Write a longer description or delete this line."
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.summary       = "Pairwise vector image conversions."
+  spec.description   = <<~DESCRIPTION
+    Vectory performs pairwise vector image conversions for common
+    vector image formats, such as SVG, EMF, EPS and PS.
+  DESCRIPTION
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+  spec.homepage      = "https://github.com/metanorma/vectory"
+  spec.license       = "BSD-2-Clause"
 
-  spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
-
-  # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files = Dir.chdir(__dir__) do
-    `git ls-files -z`.split("\x0").reject do |f|
-      (File.expand_path(f) == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|circleci)|appveyor)})
-    end
-  end
-  spec.bindir = "exe"
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.files         = `git ls-files`.split("\n")
+  spec.required_ruby_version = ">= 2.5.0"
 
-  # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
-
-  # For more information and examples about making a new gem, check out our
-  # guide at: https://bundler.io/guides/creating_gem.html
+  spec.add_runtime_dependency "emf2svg"
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rubocop-performance"
+  spec.add_development_dependency "rubocop-rspec"
 end
