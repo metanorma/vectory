@@ -11,6 +11,11 @@ image:https://img.shields.io/github/commits-since/metanorma/vectory/latest.svg["
 Vectory is a Ruby gem that performs pairwise vector image conversions for common
 vector image formats (EPS, PS, EMF, SVG).
 
+[quote]
+____
+Vectory shall give you a glorious vectory over EPS files.
+____
+
 
 == Installation
 
