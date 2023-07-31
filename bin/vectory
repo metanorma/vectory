@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "vectory/cli"
+
+status_code = Vectory::CLI.start(ARGV)
+exit status_code.is_a?(Integer) ? status_code : Vectory::CLI::STATUS_UNKNOWN_ERROR

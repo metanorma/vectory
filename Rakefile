@@ -5,6 +5,10 @@ require "rspec/core/rake_task"
 
 RSpec::Core::RakeTask.new(:spec)
 
+task :inkscape_version do
+  system('inkscape --version')
+end
+
 task default: :spec
 
 # require "rubocop/rake_task"

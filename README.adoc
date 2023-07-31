@@ -51,6 +51,76 @@ Where,
 `output-file-name`:: file path to the desired output file (with the file extension)
 
 
+=== Using the Ruby library
+
+Some examples:
+
+Take EMF as a path to a file and return SVG as a string:
+
+[source,ruby]
+----
+path = "path/to/file.emf"
+Vectory::Emf.from_path(path).to_svg.content
+----
+
+Take SVG as a datauri and return EMF as a datauri:
+
+[source,ruby]
+----
+# NOTE: datauri is shortened for readability
+datauri = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0 ... GRkYiLz48L3N2Zz4="
+Vectory::Svg.from_datauri(datauri).to_emf.datauri
+----
+
+Take EPS as a string and return EMF as a path to a file:
+
+[source,ruby]
+----
+# NOTE: content is shortened for readability
+content = "%!PS-Adobe-3.0 EPSF-3.0\n ... %%Trailer"
+Vectory::Eps.from_content(content).to_emf.write.path
+----
+
+==== What is supported?
+
+All interactions are done around the `Vectory::Image` object. Concrete vectory
+classes are descendants of it:
+
+[source,ruby]
+----
+Vectory::Eps < Image
+Vectory::Ps < Image
+Vectory::Emf < Image
+Vectory::Svg < Image
+----
+
+There are several ways of creating an Image object:
+
+[source,ruby]
+----
+Vectory::Eps.from_path
+Vectory::Eps.from_content
+Vectory::Eps.from_datauri
+----
+
+Converting to other formats:
+
+[source,ruby]
+----
+Vectory::Eps.from_content(content).to_ps
+Vectory::Eps.from_content(content).to_emf
+Vectory::Eps.from_content(content).to_svg
+----
+
+Several ways of getting a content of an object:
+
+[source,ruby]
+----
+Vectory::Eps.from_content(content).to_svg.content
+Vectory::Eps.from_content(content).to_svg.datauri
+Vectory::Eps.from_content(content).to_svg.write.path
+----
+
 == Contributing
 
 Bug reports and pull requests are welcome on GitHub at:
