@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
+require "tmpdir"
 require_relative "inkscape_converter"
 
 module Vectory
   class Eps < Image
     def to_svg
       Dir.mktmpdir do |dir|
-        # TODO: replace with initial file name
-        eps = File.join(dir, "image.eps")
-        File.binwrite(eps, @content)
-        svg = File.join(dir, "image.svg")
-        InkscapeConverter.instance.convert(eps, svg, "--export-plain-svg")
-        content = File.read(svg)
-        Svg.from_content(content)
+        eps_path = File.join(dir, "image.eps")
+        File.binwrite(eps_path, @content)
+
+        InkscapeConverter.instance.convert(eps_path, nil, "--export-plain-svg --export-type=svg")
+        svg_path = "#{eps_path}.svg"
+
+        Svg.from_path(svg_path)
       end
     end
 

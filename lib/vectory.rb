@@ -15,15 +15,12 @@ module Vectory
   def self.ui
     @ui ||= Logger.new(STDOUT).tap do |logger|
       logger.level = ENV['VECTORY_LOG'] || Logger::WARN
+      logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
     end
   end
 
   def self.root_path
     Pathname.new(File.dirname(__dir__))
-  end
-
-  def self.convert_to_svg(file, output = nil)
-    Vectory::Conversion.convert_to_svg(file, output)
   end
 
   def self.convert(image, format)
