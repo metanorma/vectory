@@ -6,15 +6,17 @@ module Vectory
   class InkscapeConverter
     include Singleton
 
-    def convert(uri, file, option)
+    def convert(uri, _file, option)
       exe = installed? or raise "Inkscape missing in PATH, unable" \
                                          "to convert image #{uri}. Aborting."
       uri = external_path uri
       exe = external_path exe
-      system(%(#{exe} #{option} #{uri})) and
-        return Vectory::Utils::datauri(file)
+      cmd = %(#{exe} #{option} #{uri})
 
-      raise %(Fail on #{exe} #{option} #{uri})
+      system(cmd, exception: true)
+
+      # and return Vectory::Utils::datauri(file)
+      # raise %(Fail on #{exe} #{option} #{uri})
     end
 
     def installed?
@@ -39,7 +41,8 @@ module Vectory
       if win
         path.gsub!(%{/}, "\\")
         path[/\s/] ? "\"#{path}\"" : path
-      else path
+      else
+        path
       end
     end
   end

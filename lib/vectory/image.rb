@@ -3,9 +3,14 @@
 module Vectory
   class Image
     def self.from_datauri_to_content(uri)
-      %r{^data:(?<imgclass>image|application)/(?<imgtype>[^;]+);(?:charset=[^;]+;)?base64,(?<imgdata>.+)$} =~ uri
+      %r{^data:(?<_imgclass>image|application)/(?<_imgtype>[^;]+);(?:charset=[^;]+;)?base64,(?<imgdata>.+)$} =~ uri
       content = Base64.strict_decode64(imgdata)
       from_content(content)
+    end
+
+    def self.from_path(path)
+      content = File.read(path, mode: "rb")
+      new(content, path)
     end
 
     def self.from_content(content)
@@ -17,6 +22,13 @@ module Vectory
     def initialize(content = nil, path = nil)
       @content = content
       @path = path
+    end
+
+    def write(path)
+      File.binwrite(path, @content)
+      @path = File.expand_path(path)
+
+      self
     end
 
     def save_dataimage(uri, _relative_dir = true)

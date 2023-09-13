@@ -25,6 +25,7 @@ Vectory relies on the following software to be installed:
 
 * https://github.com/metanorma/emf2svg-ruby[emf2svg-ruby]
 * https://inkscape.org[Inkscape]
+* https://www.ghostscript.com/[Ghostscript]
 
 
 === Gem install
