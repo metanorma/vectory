@@ -1,6 +1,5 @@
 require "spec_helper"
 require "vectory/cli"
-require "tmpdir"
 
 RSpec.describe Vectory::CLI do
   describe "#convert" do
@@ -13,7 +12,23 @@ RSpec.describe Vectory::CLI do
                                           "spec/examples/file1.eps"])
           expect(status).to be Vectory::CLI::STATUS_SUCCESS
           expect(File.read(output)).to eq File.read("spec/references/file1.svg")
-          # expect(FileUtils.identical?(output, "spec/references/file1.svg")).to be true
+        end
+      end
+    end
+
+    context "svg to emf" do
+      let(:input)     { "spec/examples/svg2emf/img.svg" }
+      let(:reference) { "spec/examples/svg2emf/img.emf" }
+
+      it "writes emf file" do
+        spec_dir do |dir|
+          output = File.join(dir, "output.emf")
+          status = described_class.start(["-f", "emf",
+                                          "-o", output,
+                                          "spec/examples/svg2emf/img.svg"])
+          expect(status).to be Vectory::CLI::STATUS_SUCCESS
+          expect(File.read(output))
+            .to be_equivalent_to File.read(reference)
         end
       end
     end

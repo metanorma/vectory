@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require 'singleton'
+require "singleton"
+require_relative "system_call"
 
 module Vectory
   class InkscapeConverter
@@ -8,12 +9,12 @@ module Vectory
 
     def convert(uri, _file, option)
       exe = installed? or raise "Inkscape missing in PATH, unable" \
-                                         "to convert image #{uri}. Aborting."
+                                "to convert image #{uri}. Aborting."
       uri = external_path uri
       exe = external_path exe
       cmd = %(#{exe} #{option} #{uri})
 
-      system(cmd, exception: true)
+      SystemCall.new(cmd).call
 
       # and return Vectory::Utils::datauri(file)
       # raise %(Fail on #{exe} #{option} #{uri})

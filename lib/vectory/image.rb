@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "tmpdir"
+
 module Vectory
   class Image
     def self.from_datauri_to_content(uri)
