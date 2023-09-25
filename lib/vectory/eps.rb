@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "tmpdir"
 require_relative "inkscape_converter"
 
 module Vectory

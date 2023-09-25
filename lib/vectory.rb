@@ -2,7 +2,6 @@
 
 require "logger"
 require_relative "vectory/version"
-require_relative "vectory/conversion"
 require_relative "vectory/utils"
 require_relative "vectory/image"
 require_relative "vectory/eps"
@@ -11,6 +10,8 @@ require_relative "vectory/svg"
 
 module Vectory
   class Error < StandardError; end
+
+  class BinaryCallError < Error; end
 
   def self.ui
     @ui ||= Logger.new(STDOUT).tap do |logger|

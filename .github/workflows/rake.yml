@@ -10,7 +10,6 @@ on:
 
 jobs:
   rake:
-    # TODO: Switch to main after merging https://github.com/metanorma/ci/pull/124
-    uses: metanorma/ci/.github/workflows/inkscape-rake.yml@ghostscript
+    uses: metanorma/ci/.github/workflows/inkscape-rake.yml@main
     secrets:
       pat_token: ${{ secrets.METANORMA_CI_PAT_TOKEN }}

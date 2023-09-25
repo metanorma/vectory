@@ -6,12 +6,13 @@ module Vectory
 
     def to_emf
       Dir.mktmpdir do |dir|
-        svg = File.join(dir, "image.svg")
-        File.binwrite(svg, @content)
-        emf = File.join(dir, "image.emf")
-        InkscapeConverter.instance.convert(svg, emf, '--export-type="emf"')
-        content = File.read(emf)
-        Emf.from_content(content)
+        svg_path = File.join(dir, "image.svg")
+        File.binwrite(svg_path, @content)
+
+        InkscapeConverter.instance.convert(svg_path, nil, '--export-type="emf"')
+        emf_path = "#{svg_path}.emf"
+
+        Emf.from_path(emf_path)
       end
     end
 
@@ -23,7 +24,5 @@ module Vectory
         node["src"]
       end
     end
-
-
   end
 end
