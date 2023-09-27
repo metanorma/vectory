@@ -5,18 +5,30 @@ require_relative "inkscape_converter"
 module Vectory
   class Eps < Image
     def to_svg
-      Dir.mktmpdir do |dir|
-        eps_path = File.join(dir, "image.eps")
-        File.binwrite(eps_path, @content)
+      convert_with_inkscape("--export-plain-svg --export-type=svg", "svg", Svg)
+    end
 
-        InkscapeConverter.instance.convert(eps_path, nil, "--export-plain-svg --export-type=svg")
-        svg_path = "#{eps_path}.svg"
-
-        Svg.from_path(svg_path)
-      end
+    def to_emf
+      convert_with_inkscape("--export-type=emf", "emf", Emf)
     end
 
     private
+
+    def convert_with_inkscape(inkscape_options, output_extension, target_class)
+      with_tmp_dir do |dir|
+        eps_path = File.join(dir, "image.eps")
+        File.binwrite(eps_path, @content)
+
+        InkscapeConverter.instance.convert(eps_path, nil, inkscape_options)
+        output_path = "#{eps_path}.#{output_extension}"
+
+        target_class.from_path(output_path)
+      end
+    end
+
+    def with_tmp_dir(&block)
+      Dir.mktmpdir(&block)
+    end
 
     def imgfile_suffix(uri, suffix)
       "#{File.join(File.dirname(uri), File.basename(uri, '.*'))}.#{suffix}"
