@@ -1,15 +1,28 @@
 require "thor"
 require_relative "../vectory"
+require_relative "file_magic"
 
 module Vectory
   class CLI < Thor
     STATUS_SUCCESS = 0
     STATUS_UNKNOWN_ERROR = 1
-    STATUS_UNSUPPORTED_FORMAT_ERROR = 2
+    STATUS_UNSUPPORTED_OUTPUT_FORMAT_ERROR = 2
+    STATUS_UNSUPPORTED_INPUT_FORMAT_ERROR = 3
 
-    module SupportedFormats
+    module SupportedOutputFormats
+      # EPS = "eps".freeze
       SVG = "svg".freeze
       EMF = "emf".freeze
+
+      def self.all
+        constants.map { |x| const_get(x) }
+      end
+    end
+
+    module SupportedInputFormats
+      EPS = :eps
+      SVG = :svg
+      # EMF = :emf
 
       def self.all
         constants.map { |x| const_get(x) }
@@ -39,7 +52,12 @@ module Vectory
         return unsupported_format_error(options[:format])
       end
 
-      object = source_object(file, options)
+      input_format = detect_input_format(file)
+      unless supported_input_format?(input_format)
+        return unsupported_input_format_error
+      end
+
+      object = source_object(file, input_format)
 
       convert_to_format(object, options)
     end
@@ -48,27 +66,40 @@ module Vectory
     private
 
     def supported_format?(format)
-      SupportedFormats.all.include?(format)
+      SupportedOutputFormats.all.include?(format)
     end
 
     def unsupported_format_error(format)
-      formats = SupportedFormats.all.map { |v| "'#{v}'" }.join(", ")
+      formats = SupportedOutputFormats.all.map { |v| "'#{v}'" }.join(", ")
 
       Vectory.ui.error(
-        "Unsupported format: '#{format}'. Please choose one of: #{formats}.",
+        "Unsupported output format '#{format}'. " \
+        "Please choose one of: #{formats}.",
       )
 
-      STATUS_UNSUPPORTED_FORMAT_ERROR
+      STATUS_UNSUPPORTED_OUTPUT_FORMAT_ERROR
     end
 
-    def source_object(file, options)
-      # TODO: detect source format
-      case options[:format]
-      when SupportedFormats::SVG
-        Vectory::Eps.from_path(file)
-      when SupportedFormats::EMF
-        Vectory::Svg.from_path(file)
-      end
+    def detect_input_format(file)
+      FileMagic.detect(file)
+    end
+
+    def supported_input_format?(format)
+      SupportedInputFormats.all.include?(format)
+    end
+
+    def unsupported_input_format_error
+      formats = SupportedInputFormats.all.map { |v| "'#{v}'" }.join(", ")
+      Vectory.ui.error(
+        "Could not detect input format. " \
+        "Please provide file of the following formats: #{formats}.",
+      )
+
+      STATUS_UNSUPPORTED_INPUT_FORMAT_ERROR
+    end
+
+    def source_object(file, format)
+      Vectory.const_get(format.capitalize).from_path(file)
     end
 
     def convert_to_format(object, options)
