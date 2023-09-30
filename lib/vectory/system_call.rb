@@ -13,7 +13,7 @@ module Vectory
 
       log_result(status, stdout, stderr)
 
-      raise_error(cmd, status, stdout, stderr) unless status.success?
+      raise_error(@cmd, status, stdout, stderr) unless status.success?
     end
 
     private

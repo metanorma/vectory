@@ -5,10 +5,9 @@ require "emf2svg"
 module Vectory
   class Emf < Image
     def to_svg
-      Dir.mktmpdir do |dir|
-        emf = File.join(dir, "image.emf")
-        File.binwrite(emf, @content)
-        content = Emf2svg.from_file(emf).sub(/<\?[^>]+>/, "")
+      with_file("emf") do |input_path|
+        content = Emf2svg.from_file(input_path).sub(/<\?[^>]+>/, "")
+
         Svg.from_content(content)
       end
     end

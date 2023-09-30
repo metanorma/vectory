@@ -6,23 +6,23 @@ module Vectory
   class CLI < Thor
     STATUS_SUCCESS = 0
     STATUS_UNKNOWN_ERROR = 1
-    STATUS_UNSUPPORTED_OUTPUT_FORMAT_ERROR = 2
-    STATUS_UNSUPPORTED_INPUT_FORMAT_ERROR = 3
+    STATUS_UNSUPPORTED_INPUT_FORMAT_ERROR = 2
+    STATUS_UNSUPPORTED_OUTPUT_FORMAT_ERROR = 3
 
-    module SupportedOutputFormats
-      # EPS = "eps".freeze
-      SVG = "svg".freeze
-      EMF = "emf".freeze
+    module SupportedInputFormats
+      EPS = :eps
+      SVG = :svg
+      EMF = :emf
 
       def self.all
         constants.map { |x| const_get(x) }
       end
     end
 
-    module SupportedInputFormats
-      EPS = :eps
-      SVG = :svg
-      # EMF = :emf
+    module SupportedOutputFormats
+      # EPS = "eps".freeze
+      SVG = "svg".freeze
+      EMF = "emf".freeze
 
       def self.all
         constants.map { |x| const_get(x) }
