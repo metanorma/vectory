@@ -44,6 +44,13 @@ RSpec.describe Vectory::CLI do
       it_behaves_like "converter", "emf"
     end
 
+    context "emf to svg" do
+      let(:input)     { "spec/examples/emf2svg/img.emf" }
+      let(:reference) { "spec/examples/emf2svg/img.svg" }
+
+      it_behaves_like "converter", "svg"
+    end
+
     context "jpg to svg" do
       let(:input)  { "spec/examples/img.jpg" }
       let(:format) { "svg" }

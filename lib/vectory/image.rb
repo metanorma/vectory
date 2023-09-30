@@ -33,6 +33,15 @@ module Vectory
       self
     end
 
+    def with_file(input_extension)
+      Dir.mktmpdir do |dir|
+        input_path = File.join(dir, "image.#{input_extension}")
+        File.binwrite(input_path, @content)
+
+        yield input_path
+      end
+    end
+
     def save_dataimage(uri, _relative_dir = true)
       %r{^data:(?<imgclass>image|application)/(?<imgtype>[^;]+);(?:charset=[^;]+;)?base64,(?<imgdata>.+)$} =~ uri
       imgtype = "emf" if emf?("#{imgclass}/#{imgtype}")

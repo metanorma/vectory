@@ -15,19 +15,12 @@ module Vectory
     private
 
     def convert_with_inkscape(inkscape_options, output_extension, target_class)
-      with_tmp_dir do |dir|
-        eps_path = File.join(dir, "image.eps")
-        File.binwrite(eps_path, @content)
-
-        InkscapeConverter.instance.convert(eps_path, nil, inkscape_options)
-        output_path = "#{eps_path}.#{output_extension}"
+      with_file("eps") do |input_path|
+        InkscapeConverter.instance.convert(input_path, nil, inkscape_options)
+        output_path = "#{input_path}.#{output_extension}"
 
         target_class.from_path(output_path)
       end
-    end
-
-    def with_tmp_dir(&block)
-      Dir.mktmpdir(&block)
     end
 
     def imgfile_suffix(uri, suffix)
