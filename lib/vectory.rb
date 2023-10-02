@@ -13,6 +13,8 @@ module Vectory
 
   class BinaryCallError < Error; end
 
+  class NotImplementedError < Error; end
+
   def self.ui
     @ui ||= Logger.new(STDOUT).tap do |logger|
       logger.level = ENV['VECTORY_LOG'] || Logger::WARN

@@ -4,12 +4,20 @@ require "emf2svg"
 
 module Vectory
   class Emf < Image
+    def self.default_extension
+      "emf"
+    end
+
     def to_svg
       with_file("emf") do |input_path|
         content = Emf2svg.from_file(input_path).sub(/<\?[^>]+>/, "")
 
         Svg.from_content(content)
       end
+    end
+
+    def to_eps
+      convert_with_inkscape("--export-type=eps", Eps)
     end
   end
 end

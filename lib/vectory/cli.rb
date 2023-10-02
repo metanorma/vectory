@@ -20,7 +20,7 @@ module Vectory
     end
 
     module SupportedOutputFormats
-      # EPS = "eps".freeze
+      EPS = "eps".freeze
       SVG = "svg".freeze
       EMF = "emf".freeze
 

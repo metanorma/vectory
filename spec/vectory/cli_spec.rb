@@ -13,12 +13,13 @@ RSpec.describe Vectory::CLI do
   describe "#convert" do
     shared_examples "converter" do |format|
       it "creates file of a chosen format" do
+        matcher = format == "eps" ? "be_equivalent_eps_to" : "be_equivalent_to"
         with_tmp_dir do |dir|
           output = File.join(dir, "output.#{format}")
           status = described_class.start(["-f", format, "-o", output, input])
           expect(status).to be Vectory::CLI::STATUS_SUCCESS
           expect(File.read(output))
-            .to be_equivalent_to File.read(reference)
+            .to public_send(matcher, File.read(reference))
         end
       end
     end
@@ -49,6 +50,13 @@ RSpec.describe Vectory::CLI do
       let(:reference) { "spec/examples/emf2svg/img.svg" }
 
       it_behaves_like "converter", "svg"
+    end
+
+    context "emf to eps" do
+      let(:input)     { "spec/examples/emf2eps/img.emf" }
+      let(:reference) { "spec/examples/emf2eps/img.eps" }
+
+      it_behaves_like "converter", "eps"
     end
 
     context "jpg to svg" do
