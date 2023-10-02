@@ -19,6 +19,11 @@ module Vectory
       new(content)
     end
 
+    def self.default_extension
+      raise Vectory::NotImplementedError,
+            "#default_extension should be implemented in a subclass."
+    end
+
     attr_reader :content, :path
 
     def initialize(content = nil, path = nil)
@@ -31,6 +36,17 @@ module Vectory
       @path = File.expand_path(path)
 
       self
+    end
+
+    def convert_with_inkscape(inkscape_options, target_class)
+      with_file(self.class.default_extension) do |input_path|
+        output_extension = target_class.default_extension
+        output_path = InkscapeConverter.instance.convert(input_path,
+                                                         output_extension,
+                                                         inkscape_options)
+
+        target_class.from_path(output_path)
+      end
     end
 
     def with_file(input_extension)

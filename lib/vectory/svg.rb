@@ -4,16 +4,12 @@ module Vectory
   class Svg < Image
     SVG = { "m" => "http://www.w3.org/2000/svg" }.freeze
 
+    def self.default_extension
+      "svg"
+    end
+
     def to_emf
-      Dir.mktmpdir do |dir|
-        svg_path = File.join(dir, "image.svg")
-        File.binwrite(svg_path, @content)
-
-        InkscapeConverter.instance.convert(svg_path, nil, '--export-type="emf"')
-        emf_path = "#{svg_path}.emf"
-
-        Emf.from_path(emf_path)
-      end
+      convert_with_inkscape("--export-type=emf", Emf)
     end
 
     def to_emf_uri_convert(node)

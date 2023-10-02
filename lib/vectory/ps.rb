@@ -2,6 +2,10 @@
 
 module Vectory
   class Ps < Image
+    def self.default_extension
+      "ps"
+    end
+
     def to_eps
     end
 
