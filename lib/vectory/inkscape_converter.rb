@@ -7,19 +7,31 @@ module Vectory
   class InkscapeConverter
     include Singleton
 
+    def self.convert(uri, output_extension, option)
+      instance.convert(uri, output_extension, option)
+    end
+
     def convert(uri, output_extension, option)
-      exe = installed? or raise "Inkscape missing in PATH, unable" \
-                                "to convert image #{uri}. Aborting."
+      exe = inkscape_path_or_raise_error
       uri = external_path uri
       exe = external_path exe
       cmd = %(#{exe} #{option} #{uri})
 
-      SystemCall.new(cmd).call
+      call = SystemCall.new(cmd).call
+
+      output_path = "#{uri}.#{output_extension}"
+      raise_conversion_error(call) unless File.exist?(output_path)
 
       # and return Vectory::Utils::datauri(file)
-      # raise %(Fail on #{exe} #{option} #{uri})
 
-      "#{uri}.#{output_extension}"
+      output_path
+    end
+
+    private
+
+    def inkscape_path_or_raise_error
+      installed? or raise "Inkscape missing in PATH, unable" \
+                          "to convert image #{uri}. Aborting."
     end
 
     def installed?
@@ -36,7 +48,14 @@ module Vectory
       nil
     end
 
-    private
+    def raise_conversion_error(call)
+      raise Vectory::ConversionError,
+            "Could not convert with Inkscape. " \
+            "Inkscape cmd: '#{call.cmd}',\n" \
+            "status: '#{call.status}',\n" \
+            "stdout: '#{call.stdout.strip}',\n" \
+            "stderr: '#{call.stderr.strip}'."
+    end
 
     def external_path(path)
       win = !!((RUBY_PLATFORM =~ /(win|w)(32|64)$/) ||

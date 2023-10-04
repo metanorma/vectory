@@ -11,6 +11,8 @@ require_relative "vectory/svg"
 module Vectory
   class Error < StandardError; end
 
+  class ConversionError < Error; end
+
   class BinaryCallError < Error; end
 
   class NotImplementedError < Error; end
