@@ -2,6 +2,8 @@ require "open3"
 
 module Vectory
   class SystemCall
+    attr_reader :status, :stdout, :stderr, :cmd
+
     def initialize(cmd)
       @cmd = cmd
     end
@@ -9,11 +11,13 @@ module Vectory
     def call
       log_cmd(@cmd)
 
-      stdout, stderr, status = execute(@cmd)
+      execute(@cmd)
 
-      log_result(status, stdout, stderr)
+      log_result
 
-      raise_error(@cmd, status, stdout, stderr) unless status.success?
+      raise_error unless @status.success?
+
+      self
     end
 
     private
@@ -23,23 +27,23 @@ module Vectory
     end
 
     def execute(cmd)
-      Open3.capture3(cmd)
+      @stdout, @stderr, @status = Open3.capture3(cmd)
     rescue Errno::ENOENT => e
       raise BinaryCallError, e.inspect
     end
 
-    def log_result(status, stdout, stderr)
-      Vectory.ui.debug("Status: #{status.inspect}")
-      Vectory.ui.debug("Stdout: '#{stdout.strip}'")
-      Vectory.ui.debug("Stderr: '#{stderr.strip}'")
+    def log_result
+      Vectory.ui.debug("Status: #{@status.inspect}")
+      Vectory.ui.debug("Stdout: '#{@stdout.strip}'")
+      Vectory.ui.debug("Stderr: '#{@stderr.strip}'")
     end
 
-    def raise_error(cmd, status, stdout, stderr)
+    def raise_error
       raise BinaryCallError,
-            "Failed to run #{cmd},\n  " \
-            "status: #{status.exitstatus},\n  " \
-            "stdout: '#{stdout.strip}',\n  " \
-            "stderr: '#{stderr.strip}'"
+            "Failed to run #{@cmd},\n  " \
+            "status: #{@status.exitstatus},\n  " \
+            "stdout: '#{@stdout.strip}',\n  " \
+            "stderr: '#{@stderr.strip}'"
     end
   end
 end
