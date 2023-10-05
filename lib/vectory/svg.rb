@@ -16,6 +16,10 @@ module Vectory
       convert_with_inkscape("--export-type=eps", Eps)
     end
 
+    def to_ps
+      convert_with_inkscape("--export-type=ps", Ps)
+    end
+
     def to_emf_uri_convert(node)
       if node.elements&.first&.name == "svg"
         a = Base64.strict_encode64(node.children.to_xml)

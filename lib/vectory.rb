@@ -5,6 +5,7 @@ require_relative "vectory/version"
 require_relative "vectory/utils"
 require_relative "vectory/image"
 require_relative "vectory/eps"
+require_relative "vectory/ps"
 require_relative "vectory/emf"
 require_relative "vectory/svg"
 

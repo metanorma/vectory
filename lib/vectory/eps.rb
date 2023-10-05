@@ -8,6 +8,10 @@ module Vectory
       "eps"
     end
 
+    def to_ps
+      convert_with_inkscape("--export-type=ps", Ps)
+    end
+
     def to_svg
       convert_with_inkscape("--export-plain-svg --export-type=svg", Svg)
     end

@@ -3,17 +3,18 @@ require "vectory/cli"
 
 RSpec.describe Vectory::CLI do
   before do
-    allow(Vectory.ui).to receive(:fatal)
-    allow(Vectory.ui).to receive(:error)
-    allow(Vectory.ui).to receive(:warn)
-    allow(Vectory.ui).to receive(:info)
-    allow(Vectory.ui).to receive(:debug)
+    # Vectory.ui.level = :debug
+    Vectory.ui.level = ENV["VECTORY_LOG"] || :fatal
   end
 
   describe "#convert" do
     shared_examples "converter" do |format|
       it "creates file of a chosen format" do
-        matcher = format == "eps" ? "be_equivalent_eps_to" : "be_equivalent_to"
+        matcher = case format
+                  when "eps", "ps" then "be_equivalent_eps_to"
+                  when "svg" then "be_equivalent_svg_to"
+                  else "be_equivalent_to"
+                  end
         with_tmp_dir do |dir|
           output = File.join(dir, "output.#{format}")
           status = described_class.start(["-f", format, "-o", output, input])
@@ -22,6 +23,13 @@ RSpec.describe Vectory::CLI do
             .to public_send(matcher, File.read(reference))
         end
       end
+    end
+
+    context "eps to ps" do
+      let(:input)     { "spec/examples/eps2ps/img.eps" }
+      let(:reference) { "spec/examples/eps2ps/img.ps" }
+
+      it_behaves_like "converter", "ps"
     end
 
     context "eps to svg" do
@@ -38,6 +46,27 @@ RSpec.describe Vectory::CLI do
       it_behaves_like "converter", "emf"
     end
 
+    context "ps to eps" do
+      let(:input)     { "spec/examples/ps2eps/img.ps" }
+      let(:reference) { "spec/examples/ps2eps/img.eps" }
+
+      it_behaves_like "converter", "eps"
+    end
+
+    context "ps to emf" do
+      let(:input)     { "spec/examples/ps2emf/img.ps" }
+      let(:reference) { "spec/examples/ps2emf/img.emf" }
+
+      it_behaves_like "converter", "emf"
+    end
+
+    context "ps to svg" do
+      let(:input)     { "spec/examples/ps2svg/img.ps" }
+      let(:reference) { "spec/examples/ps2svg/img.svg" }
+
+      it_behaves_like "converter", "svg"
+    end
+
     context "svg to emf" do
       let(:input)     { "spec/examples/svg2emf/img.svg" }
       let(:reference) { "spec/examples/svg2emf/img.emf" }
@@ -52,6 +81,13 @@ RSpec.describe Vectory::CLI do
       it_behaves_like "converter", "eps"
     end
 
+    context "svg to ps" do
+      let(:input)     { "spec/examples/svg2ps/img.svg" }
+      let(:reference) { "spec/examples/svg2ps/img.ps" }
+
+      it_behaves_like "converter", "ps"
+    end
+
     context "emf to svg" do
       let(:input)     { "spec/examples/emf2svg/img.emf" }
       let(:reference) { "spec/examples/emf2svg/img.svg" }
@@ -64,6 +100,13 @@ RSpec.describe Vectory::CLI do
       let(:reference) { "spec/examples/emf2eps/img.eps" }
 
       it_behaves_like "converter", "eps"
+    end
+
+    context "emf to ps" do
+      let(:input)     { "spec/examples/emf2ps/img.emf" }
+      let(:reference) { "spec/examples/emf2ps/img.ps" }
+
+      it_behaves_like "converter", "ps"
     end
 
     context "jpg to svg" do

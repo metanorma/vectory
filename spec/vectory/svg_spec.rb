@@ -20,4 +20,14 @@ RSpec.describe Vectory::Svg do
         .to be_equivalent_eps_to File.read(reference)
     end
   end
+
+  describe "#to_ps" do
+    let(:input)     { "spec/examples/svg2ps/img.svg" }
+    let(:reference) { "spec/examples/svg2ps/img.ps" }
+
+    it "returns ps content" do
+      expect(Vectory::Svg.from_path(input).to_ps.content)
+        .to be_equivalent_eps_to File.read(reference)
+    end
+  end
 end
