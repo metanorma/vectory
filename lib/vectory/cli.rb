@@ -11,6 +11,7 @@ module Vectory
 
     module SupportedInputFormats
       EPS = :eps
+      PS  = :ps
       SVG = :svg
       EMF = :emf
 
@@ -21,6 +22,7 @@ module Vectory
 
     module SupportedOutputFormats
       EPS = "eps".freeze
+      PS  = "ps".freeze
       SVG = "svg".freeze
       EMF = "emf".freeze
 

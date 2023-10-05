@@ -19,5 +19,9 @@ module Vectory
     def to_eps
       convert_with_inkscape("--export-type=eps", Eps)
     end
+
+    def to_ps
+      convert_with_inkscape("--export-type=ps", Ps)
+    end
   end
 end

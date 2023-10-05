@@ -25,4 +25,14 @@ RSpec.describe Vectory::Emf do
         .to be_equivalent_eps_to File.read(reference)
     end
   end
+
+  describe "#to_ps" do
+    let(:input)     { "spec/examples/emf2ps/img.emf" }
+    let(:reference) { "spec/examples/emf2ps/img.ps" }
+
+    it "returns ps content" do
+      expect(Vectory::Emf.from_path(input).to_ps.content)
+        .to be_equivalent_eps_to File.read(reference)
+    end
+  end
 end
