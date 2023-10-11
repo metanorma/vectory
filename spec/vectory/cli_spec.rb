@@ -146,5 +146,69 @@ RSpec.describe Vectory::CLI do
         end
       end
     end
+
+    context "inkscape throws ConversionError" do
+      let(:input)  { "spec/examples/eps2emf/img.eps" }
+      let(:format) { "emf" }
+
+      it "returns conversion error" do
+        with_tmp_dir do |dir|
+          expect(Vectory::InkscapeConverter.instance).to receive(:convert)
+            .and_raise(Vectory::ConversionError)
+
+          output = File.join(dir, "output.#{format}")
+          status = described_class.start(["-f", format, "-o", output, input])
+
+          expect(status).to be Vectory::CLI::STATUS_CONVERSION_ERROR
+        end
+      end
+    end
+
+    context "got SystemCallError" do
+      let(:input)  { "spec/examples/eps2emf/img.eps" }
+      let(:format) { "emf" }
+
+      it "returns system-call error" do
+        with_tmp_dir do |dir|
+          expect_any_instance_of(Vectory::SystemCall).to receive(:call)
+            .and_raise(Vectory::SystemCallError)
+
+          output = File.join(dir, "output.#{format}")
+          status = described_class.start(["-f", format, "-o", output, input])
+
+          expect(status).to be Vectory::CLI::STATUS_SYSTEM_CALL_ERROR
+        end
+      end
+    end
+
+    context "got InkscapeNotFoundError" do
+      let(:input)  { Vectory.root_path.join("spec/examples/eps2emf/img.eps") }
+      let(:format) { "emf" }
+
+      it "returns inkscape-not-found error" do
+        in_tmp_dir do
+          expect(Vectory::InkscapeConverter.instance)
+            .to receive(:convert).and_raise(Vectory::InkscapeNotFoundError)
+
+          status = described_class.start(["-f", format, input])
+
+          expect(status).to be Vectory::CLI::STATUS_INKSCAPE_NOT_FOUND_ERROR
+        end
+      end
+    end
+
+    context "no output option (it's not required)" do
+      let(:input)  { Vectory.root_path.join("spec/examples/eps2emf/img.eps") }
+      let(:format) { "emf" }
+
+      it "uses input filename with a new extension and writes to current dir" do
+        in_tmp_dir do |dir|
+          status = described_class.start(["-f", format, input])
+
+          expect(Pathname.new(File.join(dir, "img.emf"))).to exist
+          expect(status).to be Vectory::CLI::STATUS_SUCCESS
+        end
+      end
+    end
   end
 end

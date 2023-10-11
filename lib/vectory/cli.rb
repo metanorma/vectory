@@ -8,6 +8,9 @@ module Vectory
     STATUS_UNKNOWN_ERROR = 1
     STATUS_UNSUPPORTED_INPUT_FORMAT_ERROR = 2
     STATUS_UNSUPPORTED_OUTPUT_FORMAT_ERROR = 3
+    STATUS_CONVERSION_ERROR = 4
+    STATUS_SYSTEM_CALL_ERROR = 5
+    STATUS_INKSCAPE_NOT_FOUND_ERROR = 6
 
     module SupportedInputFormats
       EPS = :eps
@@ -43,10 +46,8 @@ module Vectory
            required: true,
            desc: "the desired output format (one of: svg, eps, ps, emf)"
 
-    # TODO: make the output flag optional
     option :output,
            aliases: :o,
-           required: true,
            desc: "file path to the desired output file (with the file " \
                  "extension)"
     def convert(file)
@@ -105,9 +106,27 @@ module Vectory
     end
 
     def convert_to_format(object, options)
-      path = to_format(object, options[:format]).write(options[:output]).path
+      path = options[:output] || current_dir_path(object.path, options[:format])
+      to_format(object, options[:format]).write(path)
       Vectory.ui.info("Output file was written to #{path}")
+
       STATUS_SUCCESS
+    rescue Vectory::ConversionError => e
+      Vectory.ui.error(e.message)
+
+      STATUS_CONVERSION_ERROR
+    rescue Vectory::InkscapeNotFoundError => e
+      Vectory.ui.error(e.message)
+
+      STATUS_INKSCAPE_NOT_FOUND_ERROR
+    rescue Vectory::SystemCallError => e
+      Vectory.ui.error(e.message)
+
+      STATUS_SYSTEM_CALL_ERROR
+    end
+
+    def current_dir_path(input_path, output_format)
+      File.join(Dir.pwd, "#{File.basename(input_path, '.*')}.#{output_format}")
     end
 
     def to_format(object, format)

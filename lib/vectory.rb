@@ -14,7 +14,9 @@ module Vectory
 
   class ConversionError < Error; end
 
-  class BinaryCallError < Error; end
+  class SystemCallError < Error; end
+
+  class InkscapeNotFoundError < Error; end
 
   class NotImplementedError < Error; end
 
