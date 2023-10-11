@@ -12,7 +12,7 @@ module Vectory
     end
 
     def convert(uri, output_extension, option)
-      exe = inkscape_path_or_raise_error
+      exe = inkscape_path_or_raise_error(uri)
       uri = external_path uri
       exe = external_path exe
       cmd = %(#{exe} #{option} #{uri})
@@ -29,12 +29,13 @@ module Vectory
 
     private
 
-    def inkscape_path_or_raise_error
-      installed? or raise "Inkscape missing in PATH, unable" \
-                          "to convert image #{uri}. Aborting."
+    def inkscape_path_or_raise_error(path)
+      inkscape_path or raise(InkscapeNotFoundError,
+                             "Inkscape missing in PATH, unable to " \
+                             "convert image #{path}. Aborting.")
     end
 
-    def installed?
+    def inkscape_path
       cmd = "inkscape"
       exts = ENV["PATHEXT"] ? ENV["PATHEXT"].split(";") : [""]
 

@@ -49,7 +49,9 @@ Where,
 
 `format`:: the desired output format (one of: `svg`, `eps`, `ps`, `emf`)
 `input-file-name`:: file path to the input file
-`output-file-name`:: file path to the desired output file (with the file extension)
+`output-file-name`:: file path to the desired output file (with the
+file extension) (default: writes to a current directory by the input filename
+with an extension changed to a desired format)
 
 
 === Using the Ruby library

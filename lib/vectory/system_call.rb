@@ -29,7 +29,7 @@ module Vectory
     def execute(cmd)
       @stdout, @stderr, @status = Open3.capture3(cmd)
     rescue Errno::ENOENT => e
-      raise BinaryCallError, e.inspect
+      raise SystemCallError, e.inspect
     end
 
     def log_result
@@ -39,7 +39,7 @@ module Vectory
     end
 
     def raise_error
-      raise BinaryCallError,
+      raise SystemCallError,
             "Failed to run #{@cmd},\n  " \
             "status: #{@status.exitstatus},\n  " \
             "stdout: '#{@stdout.strip}',\n  " \
