@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 module Vectory
-  class Ps < Image
+  class Ps < Vector
     def self.default_extension
       "ps"
+    end
+
+    def self.mimetype
+      "application/postscript"
     end
 
     def to_eps
