@@ -4,24 +4,15 @@ require "tmpdir"
 
 module Vectory
   class Image
-    def self.from_datauri_to_content(uri)
-      %r{^data:(?<_imgclass>image|application)/(?<_imgtype>[^;]+);(?:charset=[^;]+;)?base64,(?<imgdata>.+)$} =~ uri
-      content = Base64.strict_decode64(imgdata)
-      from_content(content)
-    end
+    class << self
+      def from_path(path)
+        content = File.read(path, mode: "rb")
+        new(content, path)
+      end
 
-    def self.from_path(path)
-      content = File.read(path, mode: "rb")
-      new(content, path)
-    end
-
-    def self.from_content(content)
-      new(content)
-    end
-
-    def self.default_extension
-      raise Vectory::NotImplementedError,
-            "#default_extension should be implemented in a subclass."
+      def from_content(content)
+        new(content)
+      end
     end
 
     attr_reader :content, :path
@@ -36,17 +27,6 @@ module Vectory
       @path = File.expand_path(path)
 
       self
-    end
-
-    def convert_with_inkscape(inkscape_options, target_class)
-      with_file(self.class.default_extension) do |input_path|
-        output_extension = target_class.default_extension
-        output_path = InkscapeConverter.instance.convert(input_path,
-                                                         output_extension,
-                                                         inkscape_options)
-
-        target_class.from_path(output_path)
-      end
     end
 
     def with_file(input_extension)

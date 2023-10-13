@@ -71,8 +71,8 @@ Take SVG as a datauri and return EMF as a datauri:
 [source,ruby]
 ----
 # NOTE: datauri is shortened for readability
-datauri = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0 ... GRkYiLz48L3N2Zz4="
-Vectory::Svg.from_datauri(datauri).to_emf.datauri
+uri = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0 ... GRkYiLz48L3N2Zz4="
+Vectory::Datauri.new(uri).to_vector.to_emf.to_uri.content
 ----
 
 Take EPS as a string and return EMF as a path to a file:
@@ -86,24 +86,22 @@ Vectory::Eps.from_content(content).to_emf.write.path
 
 ==== What is supported?
 
-All interactions are done around the `Vectory::Image` object. Concrete vectory
-classes are descendants of it:
+There are several vector classes which support conversion between each other:
 
 [source,ruby]
 ----
-Vectory::Eps < Image
-Vectory::Ps < Image
-Vectory::Emf < Image
-Vectory::Svg < Image
+Vectory::Eps
+Vectory::Ps
+Vectory::Emf
+Vectory::Svg
 ----
 
-There are several ways of creating an Image object:
+Everyone of them can be instantiated in several ways:
 
 [source,ruby]
 ----
 Vectory::Eps.from_path
 Vectory::Eps.from_content
-Vectory::Eps.from_datauri
 ----
 
 Converting to other formats:
@@ -115,14 +113,35 @@ Vectory::Eps.from_content(content).to_emf
 Vectory::Eps.from_content(content).to_svg
 ----
 
-Several ways of getting a content of an object:
+Several ways of getting content of an object:
 
 [source,ruby]
 ----
 Vectory::Eps.from_content(content).to_svg.content
-Vectory::Eps.from_content(content).to_svg.datauri
+Vectory::Eps.from_content(content).to_svg.to_uri.content # as datauri
 Vectory::Eps.from_content(content).to_svg.write.path
 ----
+
+Also there is the `Vectory::Datauri` class which represents vectory images in
+the datauri format.
+
+Convert an SVG datauri to a plain SVG:
+
+[source,ruby]
+----
+# NOTE: datauri is shortened for readability
+uri = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0 ... GRkYiLz48L3N2Zz4="
+Vectory::Datauri.new(uri).to_vector.content
+----
+
+Convert an EPS file to its datauri representation:
+
+[source,ruby]
+----
+eps = Vectory::Eps.from_path("img.eps")
+Vectory::Datauri.from_vector(eps).content
+----
+
 
 == Contributing
 

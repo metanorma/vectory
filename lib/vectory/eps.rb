@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-require_relative "inkscape_converter"
-
 module Vectory
-  class Eps < Image
+  class Eps < Vector
     def self.default_extension
       "eps"
+    end
+
+    def self.mimetype
+      "application/postscript"
     end
 
     def to_ps

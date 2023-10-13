@@ -3,9 +3,13 @@
 require "emf2svg"
 
 module Vectory
-  class Emf < Image
+  class Emf < Vector
     def self.default_extension
       "emf"
+    end
+
+    def self.mimetype
+      "image/emf"
     end
 
     def to_svg
