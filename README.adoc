@@ -63,16 +63,8 @@ Take EMF as a path to a file and return SVG as a string:
 [source,ruby]
 ----
 path = "path/to/file.emf"
+
 Vectory::Emf.from_path(path).to_svg.content
-----
-
-Take SVG as a datauri and return EMF as a datauri:
-
-[source,ruby]
-----
-# NOTE: datauri is shortened for readability
-uri = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0 ... GRkYiLz48L3N2Zz4="
-Vectory::Datauri.new(uri).to_vector.to_emf.to_uri.content
 ----
 
 Take EPS as a string and return EMF as a path to a file:
@@ -81,8 +73,20 @@ Take EPS as a string and return EMF as a path to a file:
 ----
 # NOTE: content is shortened for readability
 content = "%!PS-Adobe-3.0 EPSF-3.0\n ... %%Trailer"
+
 Vectory::Eps.from_content(content).to_emf.write.path
 ----
+
+Take SVG as a datauri and return EMF as a datauri:
+
+[source,ruby]
+----
+# NOTE: datauri is shortened for readability
+uri = "data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0 ... GRkYiLz48L3N2Zz4="
+
+Vectory::Datauri.new(uri).to_vector.to_emf.to_uri.content
+----
+
 
 ==== What is supported?
 
@@ -96,12 +100,12 @@ Vectory::Emf
 Vectory::Svg
 ----
 
-Everyone of them can be instantiated in several ways:
+Each of them can be instantiated in several ways:
 
 [source,ruby]
 ----
-Vectory::Eps.from_path
-Vectory::Eps.from_content
+Vectory::Eps.from_path("images/img.eps")
+Vectory::Eps.from_content("%!PS-Adobe-3.0...")
 ----
 
 Converting to other formats:
@@ -122,6 +126,9 @@ Vectory::Eps.from_content(content).to_svg.to_uri.content # as datauri
 Vectory::Eps.from_content(content).to_svg.write.path
 ----
 
+
+==== Datauri
+
 Also there is the `Vectory::Datauri` class which represents vectory images in
 the datauri format.
 
@@ -140,6 +147,58 @@ Convert an EPS file to its datauri representation:
 ----
 eps = Vectory::Eps.from_path("img.eps")
 Vectory::Datauri.from_vector(eps).content
+----
+
+There is also a simplified API for this case:
+
+[source,ruby]
+----
+Vectory::Eps.from_path("img.eps").to_uri.content
+----
+
+
+==== File system operations
+
+An image object contains information where it is written. It can be obtained
+with the `#path` API:
+
+[source,ruby]
+----
+vector = Vectory::Eps.from_path("img.eps")
+vector.path
+----
+
+Before the first write it raises the `NotWrittenToDiskError` error:
+
+[source,ruby]
+----
+vector.path # => raise NotWrittenToDiskError
+----
+
+After writing it returns a path of the image on a disk:
+
+[source,ruby]
+----
+vector.write
+vector.path # => "/tmp/xxx/yyy"
+----
+
+By default it writes to a temporary directory but it can be changed by
+providing an argument with a desired path:
+
+[source,ruby]
+----
+vector.write("images/img.eps")
+vector.path # => "images/img.eps"
+----
+
+Since an image can be initially read from a disk, it also keeps an initial
+path. To avoid accidental overwrite, this path is used only for read-only
+purposes.
+
+[source,ruby]
+----
+vector.initial_path # => "storage/images/img.eps"
 ----
 
 
