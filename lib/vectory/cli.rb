@@ -12,6 +12,12 @@ module Vectory
     STATUS_SYSTEM_CALL_ERROR = 5
     STATUS_INKSCAPE_NOT_FOUND_ERROR = 6
 
+    MAP_ERROR_TO_STATUS = {
+      Vectory::ConversionError => STATUS_CONVERSION_ERROR,
+      Vectory::InkscapeNotFoundError => STATUS_INKSCAPE_NOT_FOUND_ERROR,
+      Vectory::SystemCallError => STATUS_SYSTEM_CALL_ERROR,
+    }.freeze
+
     module SupportedInputFormats
       EPS = :eps
       PS  = :ps
@@ -106,23 +112,20 @@ module Vectory
     end
 
     def convert_to_format(object, options)
-      path = options[:output] || current_dir_path(object.path, options[:format])
+      path = options[:output] || current_dir_path(object.initial_path,
+                                                  options[:format])
       to_format(object, options[:format]).write(path)
       Vectory.ui.info("Output file was written to #{path}")
 
       STATUS_SUCCESS
-    rescue Vectory::ConversionError => e
-      Vectory.ui.error(e.message)
+    rescue Vectory::Error => e
+      handle_vectory_error(e)
+    end
 
-      STATUS_CONVERSION_ERROR
-    rescue Vectory::InkscapeNotFoundError => e
-      Vectory.ui.error(e.message)
+    def handle_vectory_error(exception)
+      Vectory.ui.error(exception.message)
 
-      STATUS_INKSCAPE_NOT_FOUND_ERROR
-    rescue Vectory::SystemCallError => e
-      Vectory.ui.error(e.message)
-
-      STATUS_SYSTEM_CALL_ERROR
+      MAP_ERROR_TO_STATUS[exception.class] || raise(exception)
     end
 
     def current_dir_path(input_path, output_format)
