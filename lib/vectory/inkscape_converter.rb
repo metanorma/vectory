@@ -19,8 +19,8 @@ module Vectory
 
       call = SystemCall.new(cmd).call
 
-      output_path = "#{uri}.#{output_extension}"
-      raise_conversion_error(call) unless File.exist?(output_path)
+      output_path = find_output(uri, output_extension)
+      raise_conversion_error(call) unless output_path
 
       # and return Vectory::Utils::datauri(file)
 
@@ -36,17 +36,44 @@ module Vectory
     end
 
     def inkscape_path
-      cmd = "inkscape"
-      exts = ENV["PATHEXT"] ? ENV["PATHEXT"].split(";") : [""]
+      @inkscape_path ||= find_inkscape
+    end
 
-      ENV["PATH"].split(File::PATH_SEPARATOR).each do |path|
-        exts.each do |ext|
-          exe = File.join(path, "#{cmd}#{ext}")
-          return exe if File.executable?(exe) && !File.directory?(exe)
+    def find_inkscape
+      cmds.each do |cmd|
+        extensions.each do |ext|
+          paths.each do |path|
+            exe = File.join(path, "#{cmd}#{ext}")
+
+            return exe if File.executable?(exe) && !File.directory?(exe)
+          end
         end
       end
 
       nil
+    end
+
+    def cmds
+      ["inkscapecom", "inkscape"]
+    end
+
+    def extensions
+      ENV["PATHEXT"] ? ENV["PATHEXT"].split(";") : [""]
+    end
+
+    def paths
+      ENV["PATH"].split(File::PATH_SEPARATOR)
+    end
+
+    def find_output(source_path, output_extension)
+      basenames = [File.basename(source_path, ".*"),
+                   File.basename(source_path)]
+
+      paths = basenames.map do |basename|
+        "#{File.join(File.dirname(source_path), basename)}.#{output_extension}"
+      end
+
+      paths.find { |p| File.exist?(p) }
     end
 
     def raise_conversion_error(call)

@@ -19,5 +19,9 @@ module Vectory
     def initialize(content)
       @content = content
     end
+
+    private
+
+    attr_writer :content
   end
 end

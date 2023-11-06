@@ -2,10 +2,13 @@ require "open3"
 
 module Vectory
   class SystemCall
+    TIMEOUT = 60
+
     attr_reader :status, :stdout, :stderr, :cmd
 
-    def initialize(cmd)
+    def initialize(cmd, timeout = TIMEOUT)
       @cmd = cmd
+      @timeout = timeout
     end
 
     def call
@@ -27,7 +30,13 @@ module Vectory
     end
 
     def execute(cmd)
-      @stdout, @stderr, @status = Open3.capture3(cmd)
+      result = Utils.capture3_with_timeout(cmd,
+                                           timeout: @timeout,
+                                           kill_after: @timeout)
+      Vectory.ui.error(result.inspect)
+      @stdout = result[:stdout]
+      @stderr = result[:stderr]
+      @status = result[:status]
     rescue Errno::ENOENT => e
       raise SystemCallError, e.inspect
     end

@@ -30,8 +30,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
   spec.add_development_dependency "htmlentities", "~> 4.3.4"
   spec.add_development_dependency "nokogiri", "~> 1.14"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rubocop", "~> 1.22.1"
-  spec.add_development_dependency "rubocop-rails", "~> 2.9"
-  spec.add_development_dependency "rubocop-performance", "~> 1.10"
 end

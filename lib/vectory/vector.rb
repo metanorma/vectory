@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "tempfile"
 require_relative "inkscape_converter"
 
 module Vectory
@@ -44,7 +45,7 @@ module Vectory
 
     def write(path = nil)
       target_path = path || @path || tmp_path
-      File.binwrite(target_path, @content)
+      File.binwrite(target_path, content)
       @path = File.expand_path(target_path)
 
       self
@@ -59,7 +60,7 @@ module Vectory
     def with_file(input_extension)
       Dir.mktmpdir do |dir|
         input_path = File.join(dir, "image.#{input_extension}")
-        File.binwrite(input_path, @content)
+        File.binwrite(input_path, content)
 
         yield input_path
       end

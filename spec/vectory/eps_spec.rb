@@ -19,21 +19,21 @@ RSpec.describe Vectory::Eps do
 
   describe "#to_ps" do
     let(:input)     { "spec/examples/eps2ps/img.eps" }
-    let(:reference) { "spec/examples/eps2ps/img.ps" }
+    let(:reference) { "spec/examples/eps2ps/ref.ps" }
 
     it_behaves_like "converter", "ps"
   end
 
   describe "#to_svg" do
     let(:input)     { "spec/examples/eps2svg/img.eps" }
-    let(:reference) { "spec/examples/eps2svg/img.svg" }
+    let(:reference) { "spec/examples/eps2svg/ref.svg" }
 
     it_behaves_like "converter", "svg"
   end
 
   describe "#to_emf" do
     let(:input)     { "spec/examples/eps2emf/img.eps" }
-    let(:reference) { "spec/examples/eps2emf/img.emf" }
+    let(:reference) { "spec/examples/eps2emf/ref.emf" }
 
     it_behaves_like "converter", "emf"
   end
