@@ -10,6 +10,7 @@ require_relative "vectory/eps"
 require_relative "vectory/ps"
 require_relative "vectory/emf"
 require_relative "vectory/svg"
+require_relative "vectory/svg_mapping"
 
 module Vectory
   class Error < StandardError; end

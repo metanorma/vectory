@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe Vectory::Emf do
   describe "#to_svg" do
     let(:input)     { "spec/examples/emf2svg/img.emf" }
-    let(:reference) { "spec/examples/emf2svg/img.svg" }
+    let(:reference) { "spec/examples/emf2svg/ref.svg" }
 
     it "returns svg content" do
       expect(Vectory::Emf.from_path(input).to_svg.content)
@@ -18,7 +18,7 @@ RSpec.describe Vectory::Emf do
 
   describe "#to_eps" do
     let(:input)     { "spec/examples/emf2eps/img.emf" }
-    let(:reference) { "spec/examples/emf2eps/img.eps" }
+    let(:reference) { "spec/examples/emf2eps/ref.eps" }
 
     it "returns eps content" do
       expect(Vectory::Emf.from_path(input).to_eps.content)
@@ -28,7 +28,7 @@ RSpec.describe Vectory::Emf do
 
   describe "#to_ps" do
     let(:input)     { "spec/examples/emf2ps/img.emf" }
-    let(:reference) { "spec/examples/emf2ps/img.ps" }
+    let(:reference) { "spec/examples/emf2ps/ref.ps" }
 
     it "returns ps content" do
       expect(Vectory::Emf.from_path(input).to_ps.content)

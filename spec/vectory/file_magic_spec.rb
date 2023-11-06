@@ -7,10 +7,10 @@ RSpec.describe Vectory::FileMagic do
     references = {
       "spec/examples/eps2svg/img.eps" => :eps,
       "spec/examples/eps2emf/img.eps" => :eps,
-      "spec/examples/eps2svg/img.svg" => :svg,
+      "spec/examples/eps2svg/ref.svg" => :svg,
       "spec/examples/svg2emf/img.svg" => :svg,
-      "spec/examples/eps2emf/img.emf" => :emf,
-      "spec/examples/svg2emf/img.emf" => :emf,
+      "spec/examples/eps2emf/ref.emf" => :emf,
+      "spec/examples/svg2emf/ref.emf" => :emf,
     }
 
     references.each do |file, format|

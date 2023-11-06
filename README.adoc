@@ -27,6 +27,9 @@ Vectory relies on the following software to be installed:
 * https://inkscape.org[Inkscape]
 * https://www.ghostscript.com/[Ghostscript]
 
+NOTE: Inkscape 1.3.1 does not work properly with EPS/PS on Windows. To avoid
+this issue, the 1.3.0 version of Inkscape can be used.
+
 
 === Gem install
 
@@ -154,6 +157,131 @@ There is also a simplified API for this case:
 [source,ruby]
 ----
 Vectory::Eps.from_path("img.eps").to_uri.content
+----
+
+
+==== SVG mapping (for the metanorma project)
+
+Vectory can integrate SVG files into XML or HTML, respecting internal id and
+link references:
+
+[source,ruby]
+----
+xml_string = Vectory::SvgMapping.from_path("doc.xml").call
+----
+
+In order to do that an initial XML should support the `svgmap` tag with links
+mapping. For example, it can convert XML like this:
+
+[source,xml]
+----
+<svgmap id="_4072bdcb-5895-4821-b636-5795b96787cb">
+  <figure><image src="action_schemaexpg1.svg"/></figure>
+  <target href="mn://action_schema">
+    <xref target="ref1">Computer</xref>
+  </target>
+  <target href="http://www.example.com">
+    <link target="http://www.example.com">Phone</link><
+  /target>
+</svgmap>
+----
+
+.action_schemaexpg1.svg
+[source,xml]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 595.28 841.89" style="enable-background:new 0 0 595.28 841.89;" xml:space="preserve">
+  <style type="text/css">
+          #Layer_1 { fill:none }
+          svg[id = 'Layer_1'] { fill:none }
+    .st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+  </style>
+  <image style="overflow:visible;" width="368" height="315" xlink:href="data:image/gif;base64,R0lG..ommited to save space" transform="matrix(1 0 0 1 114 263.8898)">
+  </image>
+  <a xlink:href="mn://action_schema" xlink:dummy="Layer_1">
+    <rect x="123.28" y="273.93" class="st0" width="88.05" height="41.84"/>
+  </a>
+  <a xlink:href="mn://basic_attribute_schema" >
+    <rect x="324.69" y="450.52" class="st0" width="132.62" height="40.75"/>
+  </a>
+  <a xlink:href="mn://support_resource_schema" >
+    <rect x="324.69" y="528.36" class="st0" width="148.16" height="40.75"/>
+  </a>
+</svg>
+----
+
+into XML containing inline SVG tags. Notice changes in the `id` attributes and
+the `a` tags:
+
+[source,xml]
+----
+<figure>
+  <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' id='Layer_1_000000001' x='0px' y='0px' viewBox='0 0 595.28 841.89' style='enable-background:new 0 0 595.28 841.89;' xml:space='preserve'>
+    <style> ..ommited to save space </style>
+    <image> ..ommited </image>
+    <a xlink:href='#ref1' xlink:dummy='Layer_1_000000001'>
+      <rect x='123.28' y='273.93' class='st0' width='88.05' height='41.84'/>
+    </a>
+    <a xlink:href='mn://basic_attribute_schema'>
+      <rect x='324.69' y='450.52' class='st0' width='132.62' height='40.75'/>
+    </a>
+    <a xlink:href='mn://support_resource_schema'>
+      <rect x='324.69' y='528.36' class='st0' width='148.16' height='40.75'/>
+    </a>
+  </svg>
+</figure>
+----
+
+It also supports SVG in a form of an inline tag:
+
+[source,xml]
+----
+<svgmap id="_60dadf08-48d4-4164-845c-b4e293e00abd">
+  <figure>
+    <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' id='Layer_1' x='0px' y='0px' viewBox='0 0 595.28 841.89' style='enable-background:new 0 0 595.28 841.89;' xml:space='preserve'>
+      <a href="mn://action_schema" >
+        <rect x="123.28" y="273.93" class="st0" width="88.05" height="41.84"/>
+      </a>
+      <a href="mn://basic_attribute_schema" >
+        <rect x="324.69" y="450.52" class="st0" width="132.62" height="40.75"/>
+      </a>
+      <a xlink:href="mn://support_resource_schema" >
+        <rect x="324.69" y="528.36" class="st0" width="148.16" height="40.75"/>
+      </a>
+    </svg>
+  </figure>
+  <target href="mn://action_schema">
+    <xref target="ref1">Computer</xref>
+  </target>
+  <target href="http://www.example.com">
+    <link target="http://www.example.com">Phone</link>
+  </target>
+</svgmap>
+----
+
+and datauri:
+
+[source,xml]
+----
+<svgmap id="_60dadf08-48d4-4164-845c-b4e293e00abd">
+  <figure>
+    <image src='data:image/svg+xml;base64,PD94..ommited to save space' id='__ISO_17301-1_2016' mimetype='image/svg+xml' height='auto' width='auto' alt='Workmap1'/>
+  </figure>
+  <target href="href1.htm">
+    <xref target="ref1">Computer</xref>
+  </target>
+  <target href="mn://basic_attribute_schema">
+    <link target="http://www.example.com">Phone</link>
+  </target>
+  <target href="mn://support_resource_schema">
+    <eref type="express" bibitemid="express_action_schema" citeas="">
+      <localityStack><locality type="anchor"><referenceFrom>action_schema.basic</referenceFrom></locality></localityStack>
+      Coffee
+    </eref>
+  </target>
+</svgmap>
 ----
 
 

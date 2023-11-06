@@ -27,84 +27,84 @@ RSpec.describe Vectory::CLI do
 
     context "eps to ps" do
       let(:input)     { "spec/examples/eps2ps/img.eps" }
-      let(:reference) { "spec/examples/eps2ps/img.ps" }
+      let(:reference) { "spec/examples/eps2ps/ref.ps" }
 
       it_behaves_like "converter", "ps"
     end
 
     context "eps to svg" do
       let(:input)     { "spec/examples/eps2svg/img.eps" }
-      let(:reference) { "spec/examples/eps2svg/img.svg" }
+      let(:reference) { "spec/examples/eps2svg/ref.svg" }
 
       it_behaves_like "converter", "svg"
     end
 
     context "eps to emf" do
       let(:input)     { "spec/examples/eps2emf/img.eps" }
-      let(:reference) { "spec/examples/eps2emf/img.emf" }
+      let(:reference) { "spec/examples/eps2emf/ref.emf" }
 
       it_behaves_like "converter", "emf"
     end
 
     context "ps to eps" do
       let(:input)     { "spec/examples/ps2eps/img.ps" }
-      let(:reference) { "spec/examples/ps2eps/img.eps" }
+      let(:reference) { "spec/examples/ps2eps/ref.eps" }
 
       it_behaves_like "converter", "eps"
     end
 
     context "ps to emf" do
       let(:input)     { "spec/examples/ps2emf/img.ps" }
-      let(:reference) { "spec/examples/ps2emf/img.emf" }
+      let(:reference) { "spec/examples/ps2emf/ref.emf" }
 
       it_behaves_like "converter", "emf"
     end
 
     context "ps to svg" do
       let(:input)     { "spec/examples/ps2svg/img.ps" }
-      let(:reference) { "spec/examples/ps2svg/img.svg" }
+      let(:reference) { "spec/examples/ps2svg/ref.svg" }
 
       it_behaves_like "converter", "svg"
     end
 
     context "svg to emf" do
       let(:input)     { "spec/examples/svg2emf/img.svg" }
-      let(:reference) { "spec/examples/svg2emf/img.emf" }
+      let(:reference) { "spec/examples/svg2emf/ref.emf" }
 
       it_behaves_like "converter", "emf"
     end
 
     context "svg to eps" do
       let(:input)     { "spec/examples/svg2eps/img.svg" }
-      let(:reference) { "spec/examples/svg2eps/img.eps" }
+      let(:reference) { "spec/examples/svg2eps/ref.eps" }
 
       it_behaves_like "converter", "eps"
     end
 
     context "svg to ps" do
       let(:input)     { "spec/examples/svg2ps/img.svg" }
-      let(:reference) { "spec/examples/svg2ps/img.ps" }
+      let(:reference) { "spec/examples/svg2ps/ref.ps" }
 
       it_behaves_like "converter", "ps"
     end
 
     context "emf to svg" do
       let(:input)     { "spec/examples/emf2svg/img.emf" }
-      let(:reference) { "spec/examples/emf2svg/img.svg" }
+      let(:reference) { "spec/examples/emf2svg/ref.svg" }
 
       it_behaves_like "converter", "svg"
     end
 
     context "emf to eps" do
       let(:input)     { "spec/examples/emf2eps/img.emf" }
-      let(:reference) { "spec/examples/emf2eps/img.eps" }
+      let(:reference) { "spec/examples/emf2eps/ref.eps" }
 
       it_behaves_like "converter", "eps"
     end
 
     context "emf to ps" do
       let(:input)     { "spec/examples/emf2ps/img.emf" }
-      let(:reference) { "spec/examples/emf2ps/img.ps" }
+      let(:reference) { "spec/examples/emf2ps/ref.ps" }
 
       it_behaves_like "converter", "ps"
     end
