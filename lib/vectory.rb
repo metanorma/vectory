@@ -21,6 +21,8 @@ module Vectory
 
   class InkscapeNotFoundError < Error; end
 
+  class InkscapeQueryError < Error; end
+
   class NotImplementedError < Error; end
 
   class NotWrittenToDiskError < Error; end

@@ -11,10 +11,11 @@ RSpec.describe Vectory::CLI do
     shared_examples "converter" do |format|
       it "creates file of a chosen format" do
         matcher = case format
-                  when "eps", "ps" then "be_equivalent_eps_to"
-                  when "svg" then "be_equivalent_svg_to"
+                  when "eps", "ps" then "be_eps"
+                  when "svg" then "be_svg"
                   else "be_equivalent_to"
                   end
+
         with_tmp_dir do |dir|
           output = File.join(dir, "output.#{format}")
           status = described_class.start(["-f", format, "-o", output, input])

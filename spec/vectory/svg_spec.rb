@@ -38,4 +38,36 @@ RSpec.describe Vectory::Svg do
         .to be_equivalent_eps_to File.read(reference)
     end
   end
+
+  describe "#mime" do
+    let(:input) { "spec/examples/svg2emf/img.svg" }
+
+    it "returns svg" do
+      expect(described_class.from_path(input).mime).to eq "image/svg+xml"
+    end
+  end
+
+  describe "#height" do
+    let(:input) { "spec/examples/svg2emf/img.svg" }
+
+    it "returns height" do
+      expect(described_class.from_path(input).height).to eq 90
+    end
+
+    context "incorrect data" do
+      let(:command) { described_class.from_content("incorrect123svg") }
+
+      it "raises query error" do
+        expect { command.height }.to raise_error(Vectory::InkscapeQueryError)
+      end
+    end
+  end
+
+  describe "#width" do
+    let(:input) { "spec/examples/svg2emf/img.svg" }
+
+    it "returns width" do
+      expect(described_class.from_path(input).width).to eq 90
+    end
+  end
 end

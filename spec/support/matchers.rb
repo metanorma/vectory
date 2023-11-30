@@ -1,3 +1,15 @@
+RSpec::Matchers.define :be_eps do
+  match do |actual|
+    actual.start_with?("%!PS-Adobe-3.0")
+  end
+end
+
+RSpec::Matchers.define :be_svg do
+  match do |actual|
+    actual.include?("<svg")
+  end
+end
+
 RSpec::Matchers.define :be_equivalent_eps_to do |expected|
   match do |actual|
     e = sub_time_and_version(expected)

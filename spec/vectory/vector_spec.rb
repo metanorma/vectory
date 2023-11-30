@@ -56,5 +56,42 @@ RSpec.describe Vectory::Vector do
         expect { image.path }.to raise_error(Vectory::NotWrittenToDiskError)
       end
     end
+
+    context "written to disk" do
+      before { image.write }
+
+      it "returns path on a disk" do
+        expect(image.path).to include(Dir.tmpdir)
+      end
+    end
+  end
+
+  describe "#size" do
+    let(:image) { Vectory::Emf.from_path("spec/examples/emf2svg/img.emf") }
+
+    it "returns content size" do
+      expect(image.size).to eq 1060
+    end
+  end
+
+  describe "#file_size" do
+    let(:image) { Vectory::Eps.from_path("spec/examples/eps2emf/img.eps") }
+
+    context "not written to disk" do
+      it "raises not-written error" do
+        expect { image.file_size }
+          .to raise_error(Vectory::NotWrittenToDiskError)
+      end
+    end
+
+    context "written to disk" do
+      before { image.write }
+
+      it "returns file size" do
+        expect(image.file_size).to satisfy("be either 2926 or 3125") do |v|
+          [2926, 3125].include?(v) # depends on file system
+        end
+      end
+    end
   end
 end

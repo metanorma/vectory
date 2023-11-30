@@ -329,6 +329,23 @@ purposes.
 vector.initial_path # => "storage/images/img.eps"
 ----
 
+==== Additional properties
+
+The following additional properties are supported:
+
+[source,ruby]
+----
+Datauri#mime
+Datauri#height
+Datauri#width
+Vector (Eps, Ps, Svg, Emf)
+Vector#mime
+Vector#size
+Vector#file_size
+Vector#height
+Vector#width
+----
+
 
 == Development
 

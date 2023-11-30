@@ -18,6 +18,19 @@ module Vectory
       new("data:#{mimetype};base64,#{data}")
     end
 
+    def mime
+      match = parse_datauri(@content)
+      match[:mimetype]
+    end
+
+    def height
+      to_vector.height
+    end
+
+    def width
+      to_vector.width
+    end
+
     def to_vector
       match = parse_datauri(@content)
       content = Base64.strict_decode64(match[:data])
