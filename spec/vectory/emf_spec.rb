@@ -35,4 +35,28 @@ RSpec.describe Vectory::Emf do
         .to be_equivalent_eps_to File.read(reference)
     end
   end
+
+  describe "#mime" do
+    let(:input) { "spec/examples/emf2eps/img.emf" }
+
+    it "returns emf" do
+      expect(described_class.from_path(input).mime).to eq "image/emf"
+    end
+  end
+
+  describe "#height" do
+    let(:input) { "spec/examples/emf2eps/img.emf" }
+
+    it "returns height" do
+      expect(described_class.from_path(input).height).to eq 90
+    end
+  end
+
+  describe "#width" do
+    let(:input) { "spec/examples/emf2eps/img.emf" }
+
+    it "returns width" do
+      expect(described_class.from_path(input).width).to eq 90
+    end
+  end
 end

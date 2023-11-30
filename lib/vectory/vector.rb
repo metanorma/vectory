@@ -28,6 +28,28 @@ module Vectory
       @initial_path = initial_path
     end
 
+    def mime
+      self.class.mimetype
+    end
+
+    def size
+      content.bytesize
+    end
+
+    def file_size
+      raise(NotWrittenToDiskError) unless @path
+
+      File.size(@path)
+    end
+
+    def height
+      InkscapeConverter.instance.height(content, self.class.default_extension)
+    end
+
+    def width
+      InkscapeConverter.instance.width(content, self.class.default_extension)
+    end
+
     def to_uri
       Datauri.from_vector(self)
     end

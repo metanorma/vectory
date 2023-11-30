@@ -33,7 +33,6 @@ module Vectory
       result = Utils.capture3_with_timeout(cmd,
                                            timeout: @timeout,
                                            kill_after: @timeout)
-      Vectory.ui.error(result.inspect)
       @stdout = result[:stdout]
       @stderr = result[:stderr]
       @status = result[:status]

@@ -98,4 +98,84 @@ RSpec.describe Vectory::Datauri do
       end
     end
   end
+
+  describe "#mime" do
+    context "incorrect data" do
+      let(:not_a_datauri) { "123abc" }
+
+      it "raises conversion error" do
+        expect { described_class.new(not_a_datauri).mime }
+          .to raise_error(Vectory::ConversionError)
+      end
+    end
+
+    context "eps" do
+      let(:input) { "spec/examples/eps2emf/img.eps.datauri" }
+
+      it "returns eps" do
+        expect(described_class.from_path(input).mime)
+          .to eq "application/postscript"
+      end
+    end
+
+    context "emf" do
+      let(:input) { "spec/examples/emf2eps/img.emf.datauri" }
+
+      it "returns emf" do
+        expect(described_class.from_path(input).mime).to eq "image/emf"
+      end
+    end
+
+    context "svg" do
+      let(:input) { "spec/examples/svg2emf/img.svg.datauri" }
+
+      it "returns svg" do
+        expect(described_class.from_path(input).mime).to eq "image/svg+xml"
+      end
+    end
+  end
+
+  describe "dimensions (#height / #width)" do
+    context "incorrect data" do
+      let(:not_a_datauri) { "123abc" }
+
+      it "raises conversion error" do
+        expect { described_class.new(not_a_datauri).height }
+          .to raise_error(Vectory::ConversionError)
+
+        expect { described_class.new(not_a_datauri).width }
+          .to raise_error(Vectory::ConversionError)
+      end
+    end
+
+    context "eps" do
+      let(:input) { "spec/examples/eps2emf/img.eps.datauri" }
+
+      it "returns height and width" do
+        expect(described_class.from_path(input).height)
+          .to eq 707
+
+        expect(described_class.from_path(input).width)
+          .to eq 649
+      end
+    end
+
+    context "emf" do
+      let(:input) { "spec/examples/emf2eps/img.emf.datauri" }
+
+      it "returns height and width" do
+        expect(described_class.from_path(input).height).to eq 90
+        expect(described_class.from_path(input).width).to eq 90
+      end
+    end
+
+    context "svg" do
+      let(:input) { "spec/examples/svg2emf/img.svg.datauri" }
+
+      it "returns height and width" do
+        expect(described_class.from_path(input).height).to eq 90
+        expect(described_class.from_path(input).width).to eq 90
+      end
+    end
+  end
 end

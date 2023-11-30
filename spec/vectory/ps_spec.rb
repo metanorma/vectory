@@ -30,4 +30,29 @@ RSpec.describe Vectory::Ps do
         .to be_equivalent_svg_to File.read(reference)
     end
   end
+
+  describe "#mime" do
+    let(:input) { "spec/examples/ps2emf/img.ps" }
+
+    it "returns postscript" do
+      expect(described_class.from_path(input).mime)
+        .to eq "application/postscript"
+    end
+  end
+
+  describe "#height" do
+    let(:input) { "spec/examples/ps2emf/img.ps" }
+
+    it "returns height" do
+      expect(described_class.from_path(input).height).to eq 707
+    end
+  end
+
+  describe "#width" do
+    let(:input) { "spec/examples/ps2emf/img.ps" }
+
+    it "returns width" do
+      expect(described_class.from_path(input).width).to eq 649
+    end
+  end
 end

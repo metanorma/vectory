@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "singleton"
+require "tmpdir"
 require_relative "system_call"
 
 module Vectory
@@ -12,7 +13,7 @@ module Vectory
     end
 
     def convert(uri, output_extension, option)
-      exe = inkscape_path_or_raise_error(uri)
+      exe = inkscape_path_or_raise_error
       uri = external_path uri
       exe = external_path exe
       cmd = %(#{exe} #{option} #{uri})
@@ -27,12 +28,20 @@ module Vectory
       output_path
     end
 
+    def height(content, format)
+      query_integer(content, format, "--query-height")
+    end
+
+    def width(content, format)
+      query_integer(content, format, "--query-width")
+    end
+
     private
 
-    def inkscape_path_or_raise_error(path)
+    def inkscape_path_or_raise_error
       inkscape_path or raise(InkscapeNotFoundError,
                              "Inkscape missing in PATH, unable to " \
-                             "convert image #{path}. Aborting.")
+                             "convert image. Aborting.")
     end
 
     def inkscape_path
@@ -94,6 +103,41 @@ module Vectory
       else
         path
       end
+    end
+
+    def query_integer(content, format, options)
+      query(content, format, options).to_f.round
+    end
+
+    def query(content, format, options)
+      exe = inkscape_path_or_raise_error
+
+      with_file(content, format) do |path|
+        cmd = "#{external_path(exe)} #{options} #{external_path(path)}"
+
+        call = SystemCall.new(cmd).call
+        raise_query_error(call) if call.stdout.empty?
+
+        call.stdout
+      end
+    end
+
+    def with_file(content, extension)
+      Dir.mktmpdir do |dir|
+        path = File.join(dir, "image.#{extension}")
+        File.binwrite(path, content)
+
+        yield path
+      end
+    end
+
+    def raise_query_error(call)
+      raise Vectory::InkscapeQueryError,
+            "Could not query with Inkscape. " \
+            "Inkscape cmd: '#{call.cmd}',\n" \
+            "status: '#{call.status}',\n" \
+            "stdout: '#{call.stdout.strip}',\n" \
+            "stderr: '#{call.stderr.strip}'."
     end
   end
 end

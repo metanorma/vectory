@@ -3,16 +3,18 @@ require "spec_helper"
 RSpec.describe Vectory::Eps do
   shared_examples "converter" do |format|
     it "returns content of a chosen format" do
+      to_format_method = "to_#{format}"
+      content = described_class.from_path(input)
+        .public_send(to_format_method)
+        .content
+
       matcher = case format
-                when "eps", "ps" then "be_equivalent_eps_to"
-                when "svg" then "be_equivalent_svg_to"
+                when "eps", "ps" then "be_eps"
+                when "svg" then "be_svg"
                 else "be_equivalent_to"
                 end
 
-      to_format_method = "to_#{format}"
-      expect(described_class.from_path(input)
-                            .public_send(to_format_method)
-                            .content)
+      expect(content)
         .to public_send(matcher, File.read(reference))
     end
   end
@@ -36,5 +38,30 @@ RSpec.describe Vectory::Eps do
     let(:reference) { "spec/examples/eps2emf/ref.emf" }
 
     it_behaves_like "converter", "emf"
+  end
+
+  describe "#mime" do
+    let(:input) { "spec/examples/eps2emf/img.eps" }
+
+    it "returns postscript" do
+      expect(described_class.from_path(input).mime)
+        .to eq "application/postscript"
+    end
+  end
+
+  describe "#height" do
+    let(:input) { "spec/examples/eps2emf/img.eps" }
+
+    it "returns height" do
+      expect(described_class.from_path(input).height).to eq 707
+    end
+  end
+
+  describe "#width" do
+    let(:input) { "spec/examples/eps2emf/img.eps" }
+
+    it "returns width" do
+      expect(described_class.from_path(input).width).to eq 649
+    end
   end
 end
