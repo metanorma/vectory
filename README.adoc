@@ -330,6 +330,28 @@ vector.initial_path # => "storage/images/img.eps"
 ----
 
 
+== Development
+
+=== Releasing
+
+Releasing is done automatically with GitHub Actions. Just bump and tag with
+`gem-release`.
+
+For a patch release (0.0.x) use:
+
+[source,sh]
+----
+gem bump --version patch --tag --push
+----
+
+For a minor release (0.x.0) use:
+
+[source,sh]
+----
+gem bump --version minor --tag --push
+----
+
+
 == Contributing
 
 Bug reports and pull requests are welcome on GitHub at:
