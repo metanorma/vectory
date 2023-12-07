@@ -23,8 +23,6 @@ module Vectory
       output_path = find_output(uri, output_extension)
       raise_conversion_error(call) unless output_path
 
-      # and return Vectory::Utils::datauri(file)
-
       output_path
     end
 

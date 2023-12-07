@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require "vectory/cli"
+
+Vectory.ui.level = Logger::INFO
+
+status_code = Vectory::CLI.start(ARGV)
+exit status_code.is_a?(Integer) ? status_code : Vectory::CLI::STATUS_UNKNOWN_ERROR
