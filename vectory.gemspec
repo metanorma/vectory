@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.license       = "BSD-2-Clause"
 
   spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.executables   = ["vectory"]
   spec.require_paths = ["lib"]
   spec.files         = `git ls-files`.split("\n")
   spec.required_ruby_version = ">= 2.5.0"
