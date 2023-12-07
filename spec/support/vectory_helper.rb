@@ -1,4 +1,3 @@
-require "htmlentities"
 require "nokogiri"
 require "tmpdir"
 
