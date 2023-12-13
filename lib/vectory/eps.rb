@@ -10,6 +10,15 @@ module Vectory
       "application/postscript"
     end
 
+    def self.from_node(node)
+      return from_content(node.children.to_xml) unless node.text.strip.empty?
+
+      uri = node["src"]
+      return Vectory::Datauri.new(uri).to_vector if %r{^data:}.match?(uri)
+
+      from_path(uri)
+    end
+
     def to_ps
       convert_with_inkscape("--export-type=ps", Ps)
     end

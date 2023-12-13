@@ -55,4 +55,13 @@ RSpec.describe Vectory::Ps do
       expect(described_class.from_path(input).width).to eq 649
     end
   end
+
+  describe "::from_node" do
+    let(:node) { Nokogiri::XML(File.read(input)).child }
+    let(:input) { "spec/examples/ps/inline.xml" }
+
+    it "can be converted to svg" do
+      expect(described_class.from_node(node).to_svg).to be_kind_of(Vectory::Svg)
+    end
+  end
 end

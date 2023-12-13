@@ -59,4 +59,13 @@ RSpec.describe Vectory::Emf do
       expect(described_class.from_path(input).width).to eq 90
     end
   end
+
+  describe "::from_node" do
+    let(:node) { Nokogiri::XML(File.read(input)).child }
+    let(:input) { "spec/examples/emf/datauri.xml" }
+
+    it "can be converted to eps" do
+      expect(described_class.from_node(node).to_eps).to be_kind_of(Vectory::Eps)
+    end
+  end
 end

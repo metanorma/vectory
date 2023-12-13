@@ -8,8 +8,23 @@ module Vectory
       "emf"
     end
 
+    def self.all_mimetypes
+      [mimetype] + alternative_mimetypes
+    end
+
     def self.mimetype
       "image/emf"
+    end
+
+    def self.alternative_mimetypes
+      ["application/x-msmetafile"]
+    end
+
+    def self.from_node(node)
+      uri = node["src"]
+      return Vectory::Datauri.new(uri).to_vector if %r{^data:}.match?(uri)
+
+      from_path(uri)
     end
 
     def to_svg

@@ -109,6 +109,12 @@ Each of them can be instantiated in several ways:
 ----
 Vectory::Eps.from_path("images/img.eps")
 Vectory::Eps.from_content("%!PS-Adobe-3.0...")
+Vectory::Eps.from_datauri("data:image/svg+xml;base64,PHN2 ... 2Zz4=")
+Vectory::Eps.from_node(Nokogiri::XML(
+  "<image mimetype="application/postscript" alt="3">
+    %!PS-Adobe-3.0 EPSF-3.0 ...
+   </image>"
+).child)
 ----
 
 Converting to other formats:

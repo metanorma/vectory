@@ -10,6 +10,10 @@ module Vectory
       new(content, path)
     end
 
+    def self.from_datauri(uri)
+      Datauri.new(uri).to_vector
+    end
+
     def self.default_extension
       raise Vectory::NotImplementedError,
             "#default_extension should be implemented in a subclass."
