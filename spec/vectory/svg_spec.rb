@@ -70,4 +70,13 @@ RSpec.describe Vectory::Svg do
       expect(described_class.from_path(input).width).to eq 90
     end
   end
+
+  describe "::from_node" do
+    let(:node) { Nokogiri::XML(File.read(input)).child }
+    let(:input) { "spec/examples/svg/inline.xml" }
+
+    it "can be converted to emf" do
+      expect(described_class.from_node(node).to_emf).to be_kind_of(Vectory::Emf)
+    end
+  end
 end

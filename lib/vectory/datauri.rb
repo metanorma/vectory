@@ -51,7 +51,7 @@ module Vectory
     def detect_image_class(image_type)
       case image_type
       when Eps.mimetype then return Eps
-      when Emf.mimetype then return Emf
+      when *Emf.all_mimetypes then return Emf
       when Svg.mimetype then return Svg
       end
 

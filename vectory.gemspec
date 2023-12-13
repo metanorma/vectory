@@ -20,7 +20,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = ["vectory"]
   spec.require_paths = ["lib"]
-  spec.files         = `git ls-files`.split("\n")
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(bin|spec)/})
+  end
+  spec.test_files    = `git ls-files -- {spec}/*`.split("\n")
   spec.required_ruby_version = ">= 2.5.0"
 
   spec.add_runtime_dependency "emf2svg"

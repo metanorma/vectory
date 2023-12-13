@@ -14,6 +14,17 @@ module Vectory
       "image/svg+xml"
     end
 
+    def self.from_node(node)
+      if node.elements&.first&.name == "svg"
+        return from_content(node.children.to_xml)
+      end
+
+      uri = node["src"]
+      return Vectory::Datauri.new(uri).to_vector if %r{^data:}.match?(uri)
+
+      from_path(uri)
+    end
+
     def content
       @document&.to_xml || @content
     end
