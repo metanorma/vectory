@@ -22,23 +22,30 @@ module Vectory
       "processing-instruction()|.//processing-instruction()".freeze
 
     def self.from_path(path)
-      new(File.read(path))
+      new(Nokogiri::XML(File.read(path)))
     end
 
-    def initialize(xml, local_directory = "")
-      @xml = xml
+    def self.from_xml(xml)
+      new(Nokogiri::XML(xml))
+    end
+
+    def initialize(doc, local_directory = "")
+      @doc = doc
       @local_directory = local_directory
     end
 
     def call
-      xmldoc = Nokogiri::XML(@xml)
-      @namespace = Namespace.new(xmldoc)
+      @namespace = Namespace.new(@doc)
 
-      xmldoc.xpath(@namespace.ns("//svgmap")).each_with_index do |svgmap, index|
+      @doc.xpath(@namespace.ns("//svgmap")).each_with_index do |svgmap, index|
         process_svgmap(svgmap, index)
       end
 
-      xmldoc.to_xml
+      @doc
+    end
+
+    def to_xml
+      call.to_xml
     end
 
     private

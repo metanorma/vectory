@@ -173,7 +173,7 @@ link references:
 
 [source,ruby]
 ----
-xml_string = Vectory::SvgMapping.from_path("doc.xml").call
+xml_string = Vectory::SvgMapping.from_path("doc.xml").to_xml
 ----
 
 In order to do that an initial XML should support the `svgmap` tag with links
