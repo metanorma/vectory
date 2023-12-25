@@ -8,7 +8,7 @@ RSpec.describe Vectory::SvgMapping do
 
     it "rewrites ids" do
       Dir.chdir(work_dir) do
-        content = source.call
+        content = source.to_xml
 
         expect(xmlpp(strip_image_and_style(content)))
           .to be_equivalent_to xmlpp(reference)
@@ -23,7 +23,7 @@ RSpec.describe Vectory::SvgMapping do
 
     it "rewrites ids" do
       Dir.chdir(work_dir) do
-        content = source.call
+        content = source.to_xml
 
         expect(xmlpp(strip_image(content)))
           .to be_equivalent_to xmlpp(reference)
