@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 2.5.0"
 
   spec.add_runtime_dependency "emf2svg"
+  spec.add_runtime_dependency "marcel", "~> 1.0.0"
   spec.add_runtime_dependency "nokogiri", "~> 1.14"
   spec.add_runtime_dependency "thor", "~> 1.2.1"
 end
