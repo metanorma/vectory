@@ -1,4 +1,5 @@
 require "open3"
+require_relative "capture"
 
 module Vectory
   class SystemCall
@@ -30,9 +31,9 @@ module Vectory
     end
 
     def execute(cmd)
-      result = Utils.capture3_with_timeout(cmd,
-                                           timeout: @timeout,
-                                           kill_after: @timeout)
+      result = Capture.with_timeout(cmd,
+                                    timeout: @timeout,
+                                    kill_after: @timeout)
       @stdout = result[:stdout]
       @stderr = result[:stderr]
       @status = result[:status]
