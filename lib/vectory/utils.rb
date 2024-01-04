@@ -56,6 +56,14 @@ module Vectory
         %r{^/}.match?(uri) || %r{^[A-Z]:/}.match?(uri)
       end
 
+      def svgmap_rewrite0_path(src, localdirectory)
+        if /^data:/.match?(src)
+          save_dataimage(src)
+        else
+          File.file?(src) ? src : localdirectory + src
+        end
+      end
+
       def save_dataimage(uri)
         %r{^data:(?:image|application)/(?<imgtype>[^;]+);(?:charset=[^;]+;)?base64,(?<imgdata>.+)$} =~ uri # rubocop:disable Layout/LineLength
         imgtype.sub!(/\+[a-z0-9]+$/, "") # svg+xml
