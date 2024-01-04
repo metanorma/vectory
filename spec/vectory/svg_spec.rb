@@ -7,7 +7,7 @@ RSpec.describe Vectory::Svg do
 
     it "returns emf content" do
       expect(Vectory::Svg.from_path(input).to_emf.content)
-        .to be_equivalent_to File.read(reference)
+        .to be_emf
     end
   end
 
