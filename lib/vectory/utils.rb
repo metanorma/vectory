@@ -26,7 +26,7 @@ module Vectory
       def path_which_exist(uri, local_dir)
         options = absolute_path?(uri) ? [uri] : [uri, File.join(local_dir, uri)]
         options.detect do |p|
-          File.exist?(p)
+          File.file?(p)
         end
       end
 
