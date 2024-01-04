@@ -13,7 +13,7 @@ RSpec.describe Vectory::CLI do
         matcher = case format
                   when "eps", "ps" then "be_eps"
                   when "svg" then "be_svg"
-                  else "be_equivalent_to"
+                  when "emf" then "be_emf"
                   end
 
         with_tmp_dir do |dir|

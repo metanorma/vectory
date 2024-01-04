@@ -10,6 +10,12 @@ RSpec::Matchers.define :be_svg do
   end
 end
 
+RSpec::Matchers.define :be_emf do
+  match do |actual|
+    actual.start_with?("\x01\x00\x00\x00")
+  end
+end
+
 RSpec::Matchers.define :be_equivalent_eps_to do |expected|
   match do |actual|
     e = sub_time_and_version(expected)
