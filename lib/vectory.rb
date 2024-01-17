@@ -4,6 +4,7 @@ require "logger"
 require_relative "vectory/version"
 require_relative "vectory/utils"
 require_relative "vectory/image"
+require_relative "vectory/image_resize"
 require_relative "vectory/datauri"
 require_relative "vectory/vector"
 require_relative "vectory/eps"
@@ -40,5 +41,9 @@ module Vectory
 
   def self.convert(image, format)
     image.convert(format)
+  end
+
+  def self.image_resize(img, path, maxheight, maxwidth)
+    Vectory::ImageResize.new.call(img, path, maxheight, maxwidth)
   end
 end
