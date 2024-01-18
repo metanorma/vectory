@@ -87,11 +87,11 @@ RSpec.describe Vectory::Utils do
     end
 
     it "prints message if path does not exist" do
-      expect do
-        described_class.datauri("spec/fixtures/rice_image0.png")
-      end.to output(
-        "Image specified at `spec/fixtures/rice_image0.png` does not exist.\n",
-      ).to_stderr
+      expect(Vectory.ui).to receive(:warn).with(
+        "Image specified at `spec/fixtures/rice_image0.png` does not exist.",
+      )
+
+      described_class.datauri("spec/fixtures/rice_image0.png")
     end
   end
 

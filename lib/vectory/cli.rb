@@ -11,6 +11,7 @@ module Vectory
     STATUS_CONVERSION_ERROR = 4
     STATUS_SYSTEM_CALL_ERROR = 5
     STATUS_INKSCAPE_NOT_FOUND_ERROR = 6
+    STATUS_SAME_FORMAT_ERROR = 7
 
     MAP_ERROR_TO_STATUS = {
       Vectory::ConversionError => STATUS_CONVERSION_ERROR,
@@ -62,6 +63,10 @@ module Vectory
       end
 
       input_format = detect_input_format(file)
+      if same_format?(input_format, options[:format])
+        return same_format_error(options[:format])
+      end
+
       unless supported_input_format?(input_format)
         return unsupported_input_format_error
       end
@@ -91,6 +96,16 @@ module Vectory
 
     def detect_input_format(file)
       FileMagic.detect(file)
+    end
+
+    def same_format?(input_format, output_format)
+      input_format.to_s == output_format
+    end
+
+    def same_format_error(format)
+      Vectory.ui.error("Could not convert to the same format '#{format}'.")
+
+      STATUS_SAME_FORMAT_ERROR
     end
 
     def supported_input_format?(format)

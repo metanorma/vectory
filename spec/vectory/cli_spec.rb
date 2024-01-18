@@ -148,6 +148,22 @@ RSpec.describe Vectory::CLI do
       end
     end
 
+    context "emf to emf (same type)" do
+      let(:input)  { "spec/examples/emf2svg/img.emf" }
+      let(:format) { "emf" }
+
+      it "returns same-format error" do
+        with_tmp_dir do
+          expect(Vectory.ui).to receive(:error)
+            .with("Could not convert to the same format '#{format}'.")
+
+          status = described_class.start(["-f", format, input])
+
+          expect(status).to be Vectory::CLI::STATUS_SAME_FORMAT_ERROR
+        end
+      end
+    end
+
     context "inkscape throws ConversionError" do
       let(:input)  { "spec/examples/eps2emf/img.eps" }
       let(:format) { "emf" }
