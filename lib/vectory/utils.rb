@@ -19,7 +19,7 @@ module Vectory
         path = path_which_exist(uri, local_dir)
         path and return encode_datauri(path)
 
-        warn "Image specified at `#{uri}` does not exist."
+        Vectory.ui.warn "Image specified at `#{uri}` does not exist."
         uri # Return original provided location
       end
 
