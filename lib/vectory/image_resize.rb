@@ -2,10 +2,12 @@ require "image_size"
 
 module Vectory
   class ImageResize
+    BORDER_WIDTH = 2
+
     def call(img, path, maxheight, maxwidth)
       s, realsize = get_image_size(img, path)
       img.name == "svg" && !img["viewBox"] && s[0] && s[1] and
-        img["viewBox"] = "0 0 #{s[0]} #{s[1]}"
+        img["viewBox"] = viewbox(s)
       s, skip = image_dont_resize(s, realsize)
       skip and return s
       s = image_size_fillin(s, realsize)
@@ -19,6 +21,13 @@ module Vectory
     end
 
     private
+
+    def viewbox(dimensions)
+      width = dimensions[0] + BORDER_WIDTH
+      height = dimensions[1] + BORDER_WIDTH
+
+      "0 0 #{width} #{height}"
+    end
 
     def image_dont_resize(dim, realsize)
       dim.nil? and return [[nil, nil], true]
