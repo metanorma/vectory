@@ -33,6 +33,7 @@ module Vectory
     def execute(cmd)
       result = Capture.with_timeout(cmd,
                                     timeout: @timeout,
+                                    signal: :KILL, # only KILL works on Windows
                                     kill_after: @timeout)
       @stdout = result[:stdout]
       @stderr = result[:stderr]
