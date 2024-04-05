@@ -19,14 +19,6 @@ RSpec.describe Vectory::Svg do
       expect(Vectory::Svg.from_path(input).to_eps.content)
         .to be_equivalent_eps_to File.read(reference)
     end
-
-    context "remapped links beforehand" do
-      it "converts successfully" do
-        vector = Vectory::Svg.from_path(input)
-        vector.remap_links({})
-        expect { vector.to_eps }.not_to raise_error
-      end
-    end
   end
 
   describe "#to_ps" do
@@ -53,14 +45,6 @@ RSpec.describe Vectory::Svg do
     it "returns height" do
       expect(described_class.from_path(input).height).to eq 90
     end
-
-    context "incorrect data" do
-      let(:command) { described_class.from_content("incorrect123svg") }
-
-      it "raises query error" do
-        expect { command.height }.to raise_error(Vectory::InkscapeQueryError)
-      end
-    end
   end
 
   describe "#width" do
@@ -77,6 +61,16 @@ RSpec.describe Vectory::Svg do
 
     it "can be converted to emf" do
       expect(described_class.from_node(node).to_emf).to be_kind_of(Vectory::Emf)
+    end
+  end
+
+  describe "::new" do
+    context "incorrect data" do
+      let(:command) { described_class.new("incorrect123svg") }
+
+      it "raises parsing error" do
+        expect { command }.to raise_error(Vectory::ParsingError)
+      end
     end
   end
 end

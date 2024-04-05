@@ -1,3 +1,5 @@
+require "rexml/document"
+
 RSpec::Matchers.define :be_eps do
   match do |actual|
     actual.start_with?("%!PS-Adobe-3.0")
@@ -43,14 +45,39 @@ RSpec::Matchers.define :be_equivalent_eps_to do |expected|
 end
 
 RSpec::Matchers.define :be_equivalent_svg_to do |expected|
+  # attr_reader is needed for `diffable` to work
+  attr_reader :expected, :actual
+
   match do |actual|
-    e = sub_unimportant(expected)
-    a = sub_unimportant(actual)
-    values_match?(e, a)
+    @expected = sub_unimportant(expected)
+    @actual = sub_unimportant(actual)
+
+    values_match?(@expected, @actual)
   end
 
   def sub_unimportant(str)
     str.sub(/sodipodi:docname=(.+)$/, "sodipodi:docname=")
+  end
+
+  diffable
+end
+
+RSpec::Matchers.define :be_equivalent_xml_to do |expected|
+  # attr_reader is needed for `diffable` to work
+  attr_reader :expected, :actual
+
+  match do |actual|
+    @expected = prepare_xml(expected)
+    @actual = prepare_xml(actual)
+
+    values_match?(@expected, @actual)
+  end
+
+  def prepare_xml(str)
+    doc = REXML::Document.new(str)
+    output = StringIO.new
+    doc.write(output: output, indent: 2)
+    output.string
   end
 
   diffable

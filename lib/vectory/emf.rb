@@ -29,7 +29,7 @@ module Vectory
 
     def to_svg
       with_file("emf") do |input_path|
-        content = Emf2svg.from_file(input_path).sub(/<\?[^>]+>/, "")
+        content = Emf2svg.from_file(input_path)
 
         Svg.from_content(content)
       end

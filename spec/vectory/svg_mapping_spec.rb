@@ -9,9 +9,9 @@ RSpec.describe Vectory::SvgMapping do
     it "rewrites ids" do
       Dir.chdir(work_dir) do
         content = source.to_xml
+        result = strip_image_and_style(content)
 
-        expect(xmlpp(strip_image_and_style(content)))
-          .to be_equivalent_to xmlpp(reference)
+        expect(result).to be_equivalent_xml_to(reference)
       end
     end
   end
@@ -25,8 +25,9 @@ RSpec.describe Vectory::SvgMapping do
       Dir.chdir(work_dir) do
         content = source.to_xml
 
-        expect(xmlpp(strip_image(content)))
-          .to be_equivalent_to xmlpp(reference)
+        result = strip_image(content)
+
+        expect(result).to be_equivalent_xml_to(reference)
       end
     end
   end

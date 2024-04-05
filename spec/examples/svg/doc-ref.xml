@@ -60,9 +60,7 @@
             <locality type='anchor'>
               <referenceFrom>action_schema.basic</referenceFrom>
             </locality>
-          </localityStack>
-          Coffee
-        </eref>
+          </localityStack>Coffee</eref>
       </target>
     </svgmap>
     <figure>
@@ -100,9 +98,7 @@
             <locality type='anchor'>
               <referenceFrom>action_schema.basic</referenceFrom>
             </locality>
-          </localityStack>
-          Coffee
-        </eref>
+          </localityStack>Coffee</eref>
       </target>
     </svgmap>
   </sections>

@@ -27,7 +27,7 @@ RSpec.describe Vectory::Ps do
 
     it "returns svg content" do
       expect(Vectory::Ps.from_path(input).to_svg.content)
-        .to be_equivalent_svg_to File.read(reference)
+        .to be_equivalent_xml_to File.read(reference)
     end
   end
 
