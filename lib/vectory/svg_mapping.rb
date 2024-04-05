@@ -1,4 +1,5 @@
 require_relative "svg"
+require_relative "svg_document"
 
 module Vectory
   class SvgMapping
@@ -70,13 +71,19 @@ module Vectory
     end
 
     def generate_content(image, svgmap, suffix)
-      vector = build_vector(image)
-      return unless vector
+      document = build_svg_document(image)
+      return unless document
 
       links_map = from_targets_to_links_map(svgmap)
-      vector.namespace(suffix, links_map, PROCESSING_XPATH)
+      document.namespace(suffix, links_map, PROCESSING_XPATH)
 
-      vector.content
+      document.content
+    end
+
+    def build_svg_document(image)
+      vector = build_vector(image)
+
+      SvgDocument.new(vector.content)
     end
 
     def build_vector(image)

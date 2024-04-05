@@ -55,6 +55,14 @@ RSpec.describe Vectory::Eps do
     it "returns height" do
       expect(described_class.from_path(input).height).to eq 707
     end
+
+    context "incorrect data" do
+      let(:command) { described_class.from_content("incorrect123") }
+
+      it "raises query error" do
+        expect { command.height }.to raise_error(Vectory::InkscapeQueryError)
+      end
+    end
   end
 
   describe "#width" do
