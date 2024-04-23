@@ -82,6 +82,7 @@ module Vectory
 
     def build_svg_document(image)
       vector = build_vector(image)
+      return unless vector
 
       SvgDocument.new(vector.content)
     end
