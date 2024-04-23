@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<standard-document type="semantic" version="2.8.8" schema-version="v1.3.1">
+<bibdata type="standard">
+<title language="en" format="text/plain">Document title</title>
+<docidentifier primary="true"/><docnumber/><version/><language>en</language><script>Latn</script><status><stage>published</stage></status><copyright><from>2024</from></copyright><ext><doctype>standard</doctype></ext></bibdata>
+<sections><clause id="_annotated_3d_model_data_quality_criteria_schema" inline-header="false" obligation="normative">
+<title>annotated_3d_model_data_quality_criteria_schema</title>
+<p id="_d9840641-f834-442d-b170-8e5c94a337d5">Mine text</p>
+
+<svgmap><figure id="_9da41439-977e-4a02-9eea-253ba3c4ff81"><image src="spec/examples/svg/non_existent.svg" mimetype="image/svg+xml" id="_18b8dd9a-b33c-473f-9b61-55e7fa46f6dc" height="auto" width="auto"/></figure><target href="1"><eref style="short" bibitemid="express_measure_schema" citeas="">measure_schema</eref></target><target href="2"><eref style="short" bibitemid="express_measure_schemaexpg4" citeas="">measure_schemaexpg4</eref></target><target href="3"><eref style="short" bibitemid="express_measure_schema" citeas="">measure_schema</eref></target></svgmap>
+</clause>
+
+<clause id="_annotated_3d_model_data_quality_criteria_schema_2" inline-header="false" obligation="normative">
+<title>annotated_3d_model_data_quality_criteria_schema</title>
+<p id="_6ff4d2dd-bc79-4ea2-a035-847e7488da8d">Mine text</p>
+
+<p id="_d6f06aba-6d10-496e-92c9-184fb5352013">===
+image::spec/examples/svg/non_existent.svg[]</p>
+
+<ul id="_8c4e4adb-04c9-4e45-abbf-1a86a4e32802"><li><p id="_284a41b1-4792-4179-8182-f551d3e52da0"><eref style="short" bibitemid="express_measure_schema" citeas="">measure_schema</eref>; 1</p>
+</li>
+<li><p id="_76e0a168-0d3a-493c-a3de-18e9f9f3361b"><eref style="short" bibitemid="express_measure_schemaexpg4" citeas="">measure_schemaexpg4</eref>; 2</p>
+</li>
+<li><p id="_91b02b5e-abd7-47bd-a07c-769a74500f66"><eref style="short" bibitemid="express_measure_schema" citeas="">measure_schema</eref>; 3
+===</p>
+</li>
+</ul>
+</clause>
+</sections>
+<bibliography><references hidden="true" normative="false"><bibitem id="express_measure_schema" type="internal">
+<docidentifier type="repository">express/measure_schema</docidentifier>
+</bibitem>
+<bibitem id="express_measure_schemaexpg4" type="internal">
+<docidentifier type="repository">express/measure_schemaexpg4</docidentifier>
+</bibitem>
+</references></bibliography></standard-document>

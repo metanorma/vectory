@@ -32,6 +32,22 @@ RSpec.describe Vectory::SvgMapping do
     end
   end
 
+  context "with non-existent path of image" do
+    let(:source) { Vectory::SvgMapping.from_path("doc3.xml") }
+    let(:reference) { File.read("doc3-ref.xml") }
+    let(:work_dir) { "spec/examples/svg" }
+
+    it "processes without failing" do
+      Dir.chdir(work_dir) do
+        content = source.to_xml
+
+        result = strip_image(content)
+
+        expect(result).to be_equivalent_xml_to(reference)
+      end
+    end
+  end
+
   def strip_image(xml)
     xml.gsub(%r{<image.*?</image>}m, "<image/>")
   end
