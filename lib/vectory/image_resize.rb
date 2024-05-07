@@ -15,7 +15,8 @@ module Vectory
     end
 
     def get_image_size(img, path)
-      realsize = ImageSize.path(path).size
+      detected = ImageSize.path(path).size
+      realsize = detected unless detected.all? { |x| x.nil? || x.zero? }
       s = image_size_interpret(img, realsize || [nil, nil])
       image_size_zeroes_complete(s, realsize)
     end

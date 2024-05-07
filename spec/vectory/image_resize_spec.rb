@@ -72,4 +72,10 @@ RSpec.describe Vectory::ImageResize do
     instance.call(image, "spec/examples/odf.svg", 100, 100)
     expect(image.attributes["viewBox"].value).to eq "0 0 102 102"
   end
+
+  it "svg with missing sizes" do
+    path = "spec/examples/bsi-1.svg"
+    image = Nokogiri::XML(File.read(path)).root
+    instance.call(image, path, 1200, 800)
+  end
 end
