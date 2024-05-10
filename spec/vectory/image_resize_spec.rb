@@ -78,4 +78,14 @@ RSpec.describe Vectory::ImageResize do
     image = Nokogiri::XML(File.read(path)).root
     instance.call(image, path, 1200, 800)
   end
+
+  it "xml with no size" do
+    path = "spec/examples/img1.xml"
+    content = File.read(path)
+    data = Base64.strict_encode64(content)
+    datauri = "data:application/xml;base64,#{data}"
+    img_tag = %(<img src="#{datauri}" height="20" width="auto"/>)
+    img = Nokogiri::XML(img_tag).root
+    Vectory::ImageResize.new.call(img, path, 1200, 800)
+  end
 end
