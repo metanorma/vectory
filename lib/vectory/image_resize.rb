@@ -15,13 +15,21 @@ module Vectory
     end
 
     def get_image_size(img, path)
-      detected = ImageSize.path(path).size
-      realsize = detected unless detected.all? { |x| x.nil? || x.zero? }
+      detected = detect_size(path)
+      realsize = detected if detected
       s = image_size_interpret(img, realsize || [nil, nil])
       image_size_zeroes_complete(s, realsize)
     end
 
     private
+
+    def detect_size(path)
+      size = ImageSize.path(path).size
+      return unless size
+      return if size.all? { |x| x.nil? || x.zero? }
+
+      size
+    end
 
     def viewbox(dimensions)
       width = dimensions[0] + BORDER_WIDTH

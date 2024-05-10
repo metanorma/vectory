@@ -1,0 +1,7 @@
+<imgfile.content module="fundamentals_of_product_description_and_support" file="action_schemaexpg1.xml">
+<img src="action_schemaexpg1.gif">
+<img.area shape="rect" coords="210,186,343,227" href="../../resources/basic_attribute_schema/basic_attribute_schema.xml"/>
+<img.area shape="rect" coords="10,10,96,51" href="../../resources/action_schema/action_schema.xml"/>
+<img.area shape="rect" coords="210,264,358,305" href="../../resources/support_resource_schema/support_resource_schema.xml"/>
+</img>
+</imgfile.content>
