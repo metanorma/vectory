@@ -12,7 +12,9 @@ module Vectory
 
     def self.from_vector(vector)
       mimetype = vector.class.mimetype
-      content = vector.content.gsub("\r\n", "\n")
+      # content = vector.content.gsub("\r\n", "\n")
+      content = vector.content
+      content = content.gsub("\r\n", "\n") if vector.mime == "image/svg+xml"
       data = Base64.strict_encode64(content)
 
       new("data:#{mimetype};base64,#{data}")
