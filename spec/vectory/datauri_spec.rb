@@ -178,4 +178,18 @@ RSpec.describe Vectory::Datauri do
       end
     end
   end
+  describe "round-trip integrity" do
+    context "emf" do
+      let(:input_path) { "spec/examples/emf2eps/img.emf" }
+
+      it "preserves EMF content through Data URI round-trip" do
+        original = Vectory::Emf.from_path(input_path)
+        datauri1 = Vectory::Datauri.from_vector(original)
+        restored = datauri1.to_vector
+        datauri2 = Vectory::Datauri.from_vector(restored)
+
+        expect(datauri2.content).to eq datauri1.content
+      end
+    end
+  end
 end
