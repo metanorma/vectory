@@ -23,12 +23,13 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(bin|spec)/})
   end
-  spec.test_files    = `git ls-files -- {spec}/*`.split("\n")
+  spec.test_files = `git ls-files -- {spec}/*`.split("\n")
   spec.required_ruby_version = ">= 2.5.0"
 
-  spec.add_runtime_dependency "emf2svg"
-  spec.add_runtime_dependency "image_size", ">= 3.2.0"
-  spec.add_runtime_dependency "marcel", "~> 1.0"
-  spec.add_runtime_dependency "nokogiri", "~> 1.14"
-  spec.add_runtime_dependency "thor", "~> 1.0"
+  spec.add_dependency "base64"
+  spec.add_dependency "emf2svg"
+  spec.add_dependency "image_size", ">= 3.2.0"
+  spec.add_dependency "marcel", "~> 1.0"
+  spec.add_dependency "nokogiri", "~> 1.14"
+  spec.add_dependency "thor", "~> 1.0"
 end
